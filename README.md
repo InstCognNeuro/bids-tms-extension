@@ -18,7 +18,7 @@ TMS is a non-invasive neurostimulation technique used in both research and clini
 ## File Structure
 
 This extension introduces new files and metadata under the `tms/` directory inside each subject/session:
-
+```
 sub-<label>/
 	└── ses-<label>/
 		└── tms/
@@ -27,7 +27,8 @@ sub-<label>/
 			├── sub-<label>[_ses-<label>]_task-<label>[_acq-<label>][_run-<label>]_tms.json
 			├── sub-<label>[_ses-<label>]_task-<label>[_acq-<label>][_run-<label>]_markers.tsv
 			└── sub-<label>[_ses-<label>]_task-<label>[_acq-<label>][_run-<label>]_markers.json
-			
+```
+		
 These files document:
 
 - **Registration and navigation systems**
