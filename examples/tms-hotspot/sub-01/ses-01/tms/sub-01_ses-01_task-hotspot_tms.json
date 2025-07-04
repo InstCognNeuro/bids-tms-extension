@@ -160,10 +160,7 @@
   "MarkerID": {
     "Description": "Unique identifier of stimulation target point. Follow the _markers.tsv"
   },
-  "PeelingDepth": {
-    "Description": "Depth “distance” from cortex surface to the target point OR from the entry marker to the target marker.",
-    "Units": "mm"
-  },
+  
   "StimStepCount": {
     "Description": "Count of pulses determines the stepping and number of pulses produced per mark."
   },

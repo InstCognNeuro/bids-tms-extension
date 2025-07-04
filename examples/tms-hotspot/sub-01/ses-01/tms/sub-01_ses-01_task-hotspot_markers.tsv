@@ -1,4 +1,1 @@
-MarkerID	MarkerType	MarkerTypeDescription	x	y	z	Matrix4D	normal_x	normal_y	normal_z	direction_x	direction_y	direction_z	ElectricFieldMax_x	ElectricFieldMax_y	ElectricFieldMax_z
-Loc_1	targer	Localite_target	-68.5217	-27.8259	78.1456	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	
-Loc_2	entry	Localite_entry	-70.5217	-28.7561	77.8624	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	
-Loc_3	coil	Localite_Instrument_marker	n/a	n/a	n/a	[0.6907,-0.5982,-1.8741,-68.5217,-0.0673,-0.61236,0.7876,-27.8259,-0.7198,-0.5167,-0.4632,78.1456,0.0,0.0,0.0,1.0]	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a
+MarkerID	PeelingDepth	target_x	target_y	target_z	entry_x	entry_y	entry_z	Matrix4D	coil_x	coil_y	coil_z	normal_x	normal_y	normal_z	direction_x	direction_y	direction_z	ElectricFieldMax_x	ElectricFieldMax_y	ElectricFieldMax_z	Timestamp
