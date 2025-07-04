@@ -1,0 +1,30 @@
+{
+  "TaskName":"Motor Imagery",
+  "InstitutionName":"Institute for Cognitive Neuroscience, National Research University 'Higher School of Economics'",
+  
+  "TaskDescription":"Subjects see various images for which phase, amplitude spectrum, and color vary continuously",
+  "Instructions":"Your task is to detect images when they appear for the 2nd time, only then press the response button with your right/left hand (counterbalanced across subjects)",
+
+  "Manufacturer":"Brain Products",
+  "ManufacturersModelName":"BrainAmP ExG",
+  "SamplingFrequency":1000,
+  "EMGChannelCount":2,
+  
+  "EEGChannelCount":0,
+  "EOGChannelCount":0,
+  "ECGChannelCount":0,
+  "MiscChannelCount":0,
+  "TriggerChannelCount":1,
+  "PowerLineFrequency":50,
+  "EEGPlacementScheme":"n/a",
+  "EEGReference":"n/a",
+  "EEGGround":"n/a", 
+  
+  "SoftwareFilters": {
+	  "Anti-aliasing filter":{
+		  "High-cutoff (Hz)": 0,
+		  "Low-cutoff (Hz)": 0,
+		  "Notch (Hz)": 0
+	  }
+  }
+}

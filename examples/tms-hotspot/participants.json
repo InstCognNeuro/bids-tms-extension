@@ -1,0 +1,35 @@
+{
+	"participant_id": {
+		"Description": "ID of the subject."
+	},
+
+	"age": {
+		"Description": "Participant's age in years. n/a means there was no response from participant though a response was possible. Question may have been skipped over by participant.",
+		"Units": "Years"
+	},
+	
+	"sex": {
+		"Description": "Biological sex assigned at birth.",
+		"Levels": {
+			"male": "Male",
+			"female": "Female",
+			"n/a": "No response, meaning there was no response from participant though a response was possible. Question may have been skipped over by participant."
+		}
+	},
+	
+	"handedness": {
+		"Description": "Handedness is decided based on Laterality Quotient ranges from the Edinburgh Handedness Inventory.  See Levels below for exact ranges.",
+		"Levels": {
+			"left": "Left-handedness (Laterality Quotient between -100 and -40)",
+			"ambidextrous": "Ambidexterity (Laterality Quotient between -40 and 40)",
+			"right": "Right-handedness (Laterality Quotient between 40 and 100)",
+			"n/a": "No data available for a response.  The question was not presented or asked to the participant."
+		}
+	},
+	
+	"group": {
+		"Description": "experimental group the participant belonged to"
+		 }
+	 }
+  
+}

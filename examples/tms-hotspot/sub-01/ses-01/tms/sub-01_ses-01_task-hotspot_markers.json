@@ -1,0 +1,64 @@
+{
+  "MarkerID": {
+    "Description": "Unique identifier for each marker. This column must appear first in the file."
+  },
+  
+  "MarkerType": {
+    "Description": "Type of the marker (e.g., "entry":Anatomical entry point for stimulation,"target":Stimulation target point,"coil":Position of the coil during stimulation)",
+    "Levels": {
+      "entry": "Anatomical entry point for stimulation",
+      "target": "Stimulation target point",
+	  "coil": "Position of the coil during stimulation"
+	}
+  },
+  
+  "MarkerTypeDescription": {
+	  "Description":"Free-form text description of the marker type and the orientation model"
+  },
+  
+  "x": {
+    "Description": "X-coordinate of the marker in millimeters",
+    "Units": "mm"
+  },
+  "y": {
+    "Description": "Y-coordinate of the marker in millimeters",
+    "Units": "mm"
+  },
+  "z": {
+    "Description": "Z-coordinate of the marker in millimeters",
+    "Units": "mm"
+  },
+  
+  "Matrix4D": {
+	  "Description": " 4x4 affine transformation matrix for instrument markers (Localite systems)"
+  },
+  
+  "normal_x": {
+	  "Description": "X component of coil normal vector."
+  },
+  "normal_y": {
+	  "Description": "Y component of coil normal vector."
+  },
+  "normal_z": {
+	  "Description": "Z component of coil normal vector."
+  },
+  "direction_x": {
+	  "Description": "X component of coil direction vector."
+  },
+  "direction_y": {
+	  "Description": "Y component of coil direction vector."
+  },
+  "direction_z": {
+	  "Description": "Z component of coil direction vector."
+  },
+  
+  "ElectricFieldMax_x": {
+	  "Description": "X coordinate of max electric field point."
+  },
+  "ElectricFieldMax_y": {
+	  "Description": "Y coordinate of max electric field point."
+  },
+  "ElectricFieldMax_z": {
+	  "Description": "Z coordinate of max electric field point."
+  }
+}

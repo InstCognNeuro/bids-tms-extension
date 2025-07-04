@@ -86,16 +86,21 @@ These files supplement the DigitizedHeadPoints, DigitizedHeadPointsUnits, and Di
 
 ### 5.2 `_markers.tsv` — Stimulation Site Coordinates (optional sidecar `_markers.json` )
 
-Stores stimulation target coordinates and optional orientation information. Supports multiple navigation systems (e.g., Localite, Nexstim) via flexible fields. 
+Stores stimulation target coordinates and optional coil's orientation information. Supports multiple navigation systems (e.g., Localite, Nexstim) via flexible fields. 
 Required columns:
 
 - `MarkerID`: Unique identifier for each marker. This column must appear first in the file.
-- `MarkerType`: Type of the marker (e.g., entry, target, coil, etc.)
-- `MarkerTypeDescription`: Free-form text description of the marker type and the orientation model.
-- `x`: X-coordinate in mm of marker center.
-- `y`: Y-coordinate in mm of marker center.
-- `z`: Z-coordinate in mm of marker center.
-- `Matrix4D`:  4x4 affine transformation matrix for instrument markers (Localite systems)
+- `PeelingDepth`: Depth “distance” from cortex surface to the target point OR from the entry marker to the target marker (mm).
+- `target_x`: X-coordinate of the target point in millimeters.
+- `target_y`: Y-coordinate of the target point in millimeters.
+- `target_z`: Z-coordinate of the target point in millimeters.
+- `entry_x`: X-coordinate of the entry point in millimeters.
+- `entry_y`: Y-coordinate of the entry point in millimeters.
+- `entry_z`: Z-coordinate of the entry point in millimeters.
+- `Matrix4D`:  4x4 affine transformation matrix for the coil positioning (instrument markers of Localite systems)
+- `coil_x`:  X component of coil's origin location.
+- `coil_y`:  y component of coil's origin location.
+- `coil_z`:  Z component of coil's origin location.
 - `normal_x`:  X component of coil normal vector.
 - `normal_y`:  y component of coil normal vector.
 - `normal_z`:  Z component of coil normal vector.
@@ -105,16 +110,16 @@ Required columns:
 - `ElectricFieldMax_x`:   X coordinate of max electric field point.
 - `ElectricFieldMax_y`:   Y coordinate of max electric field point.
 - `ElectricFieldMax_z`:   Z coordinate of max electric field point.
+- `Timestamp`:   Timestamp of the stimulation event in ISO 8601 format.
 
 ### Field Ordering Rationale
 
 The _markers.tsv file defines the spatial locations and orientation vectors of stimulation targets used in TMS experiments. When designing this structure, we drew partial inspiration from existing BIDS files such as *_electrodes.tsv (EEG), which capture electrode positions. However, no existing modality in BIDS explicitly supports the full specification required for navigated TMS — including stimulation coordinates, orientation vectors, and electric field estimates.
 This makes _markers.tsv a novel file type, tailored to the specific needs of TMS. Fields are ordered to reflect their functional roles:
-- Identification & Type: MarkerID, MarkerType, and MarkerTypeDescription appear first, enabling structured referencing in the _tms.tsv file.
-- Spatial Coordinates: x, y, z describe the position of the stimulation point in the selected coordinate system.
-- Orientation Vectors: normal_* and direction_* vectors define the coil orientation in 3D space — a critical factor in modeling TMS effects.
-- Electric Field (optional): ElectricFieldMax_x/y/z define where the electric field is maximized.
-- Transformation Matrix (optional): Matrix4D supports compatibility with Localite-style marker transformations.
+- Identification: MarkerID appears first, enabling structured referencing in the _tms.tsv file. May include not only a unique ID number but also a step count determines the stepping and number of pulses produced per mark.
+- Spatial Coordinates: target_*, entry_* and PeelingDepth  describe the position of the stimulation point in the selected coordinate system. coil(x,y,z) describe the position of the TMS coil in the selected coordinate system.
+- Orientation Vectors: normal_* and direction_* vectors or transformation matrix ("Matrix4D") define the coil orientation in 3D space — a critical factor in modeling TMS effects.
+- Electric Field (optional): ElectricFieldMax_* defines where the electric field is maximized.
 
 This design supports both minimal and advanced use cases: basic datasets can include just the spatial coordinates, while high-resolution multimodal studies can specify full coil orientation and field modeling parameters.
 
@@ -142,7 +147,6 @@ Stores all stimulation data. Contains one row per stimulation step. Required col
 - `TrainRampUp`:  Ramp-up coefficient for burst stimulation.  Ramp-up coefficient for burst stimulation. The Ramp Up function allows programming a gradual increase in amplitude with each train during burst stimulation.
 - `TrainRampUpNumber`: The number of trains applied for Ramp Up function.
 - `MarkerID`: Unique identifier of stimulation target point. Follow the _markers.tsv
-- `PeelingDepth`: Depth “distance” from cortex surface to the target point OR from the entry marker to the target marker (mm).
 - `StimStepCount`: Count of pulses determines the stepping and number of pulses produced per mark.
 - `PulseAmplitude`: An expression for the power output level as a percentage of maximum stimulator power (% of max output).
 - `DoublePulseAmplitude`: Actual for Dual_mode. The independent amplitude of the second pulse as a percentage of maximum stimulator power(% of max output).
@@ -173,7 +177,7 @@ These parameters describe the temporal pattern and structure of stimulation prot
 
 Block 3 — Target-Specific Stimulation and Outcomes:
 This section captures the most dynamic data — values that change from one stimulation point to another:
-- MarkerID, PeelingDepth, StimStepCount, PulseAmplitude, DoublePulseAmplitude, PulseAmplitudeRatio, PulseAmplitudeRMT, StimValidation, CurrentGradient, ElectricFieldTarget, ElectricFieldMax, MotorResponse, Latency, ResponseChannelName, ResponseChannelType, Comments, Timestamp
+- MarkerID, StimStepCount, PulseAmplitude, DoublePulseAmplitude, PulseAmplitudeRatio, PulseAmplitudeRMT, StimValidation, CurrentGradient, ElectricFieldTarget, ElectricFieldMax, MotorResponse, Latency, ResponseChannelName, ResponseChannelType, Comments, Timestamp
 
 This structure reflects the actual flow of TMS experimentation — from hardware configuration, through protocol design, to per-target application and physiological feedback. Grouping fields this way improves readability and aligns with practical data collection workflows.
 
@@ -185,13 +189,36 @@ This structure reflects the actual flow of TMS experimentation — from hardware
 - EMG recordings (motor response)
 - Behavioral measurements (e.g., task responses)
 
-### 5.6 JSON Sidecars
+### 5.6 Sidecar JSON Files
 
-- Each TSV is accompanied by a sidecar .json file with:
-- Field descriptions
-- Units
-- Levels (if categorical)
-- Optional hardware & software specifications
+Each .tsv file is accompanied by a corresponding .json sidecar that provides essential metadata. These sidecars serve both as formal definitions of the tabular fields and as containers for standardized metadata describing the context of data acquisition.
+
+#### _tms.json Sidecar
+
+The _tms.json file describes the contents of the associated _tms.tsv and provides additional metadata categories commonly found across BIDS modalities. It should include:
+
+Field definitions for each column in _tms.tsv, including:
+- Description
+- Units (e.g., ms, %, A/µs)
+- Levels (for categorical fields such as StimulusMode, CurrentDirection, etc.)
+
+In addition, the following structured metadata blocks are RECOMMENDED:
+
+Hardware Information: Details about the TMS stimulator, coil model, navigation system, amplifier (if applicable).
+- StimulatorManufacturer, StimulatorModel, CoilModel, NavigationSystem, Manufacturer, ManufacturersModelName, DeviceSerialNumber, etc.
+
+Task Information: Description of the cognitive/behavioral task during which stimulation is applied.
+- TaskName, TaskDescription, Instructions, CogAtlasID, etc.
+
+Institution Information: BIDS-compliant fields such as:
+- InstitutionName, InstitutionAddress, InstitutionalDepartmentName
+
+Electrical Stimulation Metadata:
+- ElectricalStimulation: boolean value (true if stimulation was applied)
+- ElectricalStimulationParameters: structured free-form description of stimulation protocol or parameters
+
+These metadata fields enhance dataset interpretability, facilitate cross-site harmonization, and promote automated analysis pipelines.
+Other .json sidecars (e.g., for _markers.tsv or _coordsystem.json) should follow similar BIDS conventions, focusing on field-level descriptions, spatial units, and hardware references.
 
 ### 5.7 Hardware Metadata
 
