@@ -164,18 +164,18 @@
   "StimStepCount": {
     "Description": "Count of pulses determines the stepping and number of pulses produced per mark."
   },
-  "PulseAmplitude": {
+  "FirstPulseIntens": {
     "Description": "An expression for the power output level as a percentage of maximum stimulator power",
     "Units": "%"
   },
-  "DoublePulseAmplitude": {
+  "SecondPulseIntens": {
     "Description": "Actual for Dual_mode. The independent amplitude of the second pulse as a percentage of maximum stimulator power.",
     "Units": "%"
   },
-  "PulseAmplitudeRatio": {
+  "PulseIntensRatio": {
     "Description": "Actual for Twin_mode. Ratio of the amplitude of two pulses B/A."
   },
-  "PulseAmplitudeRMT": {
+  "PulseIntensRMT": {
     "Description": "Stimulation intensity as a percentage of the Resting Motor Threshold (% of RMT).",
     "Units": "%"
   },

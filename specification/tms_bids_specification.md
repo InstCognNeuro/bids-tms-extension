@@ -148,10 +148,10 @@ Stores all stimulation data. Contains one row per stimulation step. Required col
 - `TrainRampUpNumber`: The number of trains applied for Ramp Up function.
 - `MarkerID`: Unique identifier of stimulation target point. Follow the _markers.tsv
 - `StimStepCount`: Count of pulses determines the stepping and number of pulses produced per mark.
-- `PulseAmplitude`: An expression for the power output level as a percentage of maximum stimulator power (% of max output).
-- `DoublePulseAmplitude`: Actual for Dual_mode. The independent amplitude of the second pulse as a percentage of maximum stimulator power(% of max output).
-- `PulseAmplitudeRatio`:  Actual for Twin_mode. Ratio of the amplitude of two pulses B/A.
-- `PulseAmplitudeRMT`: Stimulation intensity as a percentage of the Resting Motor Threshold (% of RMT).
+- `FirstPulseIntens`: An expression for the power output level as a percentage of maximum stimulator power (% of max output).
+- `SecondPulseIntens`: Actual for Dual_mode. The independent amplitude of the second pulse as a percentage of maximum stimulator power(% of max output).
+- `PulseIntensRatio`:  Actual for Twin_mode. Ratio of the amplitude of two pulses B/A.
+- `PulseIntensRMT`: Stimulation intensity as a percentage of the Resting Motor Threshold (% of RMT).
 - `StimValidation`: Validation of the applied stimulation. Whether stimulation was validated ("yes", "no", etc).
 - `CurrentGradient`: Actual measured value of the coil current gradient (A/µs).
 - `ElectricFieldTarget`: Electric field at target (V/m).
@@ -177,7 +177,7 @@ These parameters describe the temporal pattern and structure of stimulation prot
 
 Block 3 — Target-Specific Stimulation and Outcomes:
 This section captures the most dynamic data — values that change from one stimulation point to another:
-- MarkerID, StimStepCount, PulseAmplitude, DoublePulseAmplitude, PulseAmplitudeRatio, PulseAmplitudeRMT, StimValidation, CurrentGradient, ElectricFieldTarget, ElectricFieldMax, MotorResponse, Latency, ResponseChannelName, ResponseChannelType, Comments, Timestamp
+- MarkerID, StimStepCount, FirstPulseIntens, SecondPulseIntens, PulseIntensRatio, PulseIntensRMT, StimValidation, CurrentGradient, ElectricFieldTarget, ElectricFieldMax, MotorResponse, Latency, ResponseChannelName, ResponseChannelType, Comments, Timestamp
 
 This structure reflects the actual flow of TMS experimentation — from hardware configuration, through protocol design, to per-target application and physiological feedback. Grouping fields this way improves readability and aligns with practical data collection workflows.
 
