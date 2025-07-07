@@ -2,7 +2,7 @@ BrainVision Data Exchange Marker File Version 1.0
 
 [Common Infos]
 Codepage=UTF-8
-DataFile=31_passive_right.eeg
+DataFile=sub-01_ses-01_task-hotspot_eeg.eeg
 
 [Marker Infos]
 ; Each entry: Mk<Marker number>=<Type>,<Description>,<Position in data points>,

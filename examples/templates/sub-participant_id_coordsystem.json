@@ -1,0 +1,27 @@
+
+{
+  "ImageData": {
+    "Description": "Description of the anatomical data used for co-registration. Includes Levels: DICOM, NIFTI, MR-less.",
+    "Levels": {
+      "DICOM": "MRI scan in medical image data format",
+      "NIFTI": "MRI scan in Neuroimaging Informatics Technology Initiative file format",
+      "MR-less": "MNI model based on a transformed standard dataset (MNI ICBM152 non-linear symmetric T1 Average Brain)"
+    }
+  },
+  "IntendedFor": "Path to the anatomical file this coordinate system refers to. BIDS-style path. (example: bids::sub-01/ses-01/anat/sub-01_T1w.nii.gz)",
+  
+  "AnatomicalLandmarkCoordinateSystem": "Defines the coordinate system for the TMS points localization. Name of the coordinate system used: Individual, MNI, or Talairach.",
+  "AnatomicalLandmarkCoordinateSystemUnits": "Units of the coordinates of Anatomical Landmark Coordinate System. Must be one of: "m", "mm", "cm", "n/a".",
+  "AnatomicalLandmarkCoordinateSystemDescription": "Free-form text description of the coordinate system. May also include a link to a documentation page or paper describing the system in greater detail.RAS orientation: Origin halfway between LPA and RPA, positive x-axis towards RPA, positive y-axis orthogonal to x-axis through Nasion, z-axis orthogonal to xy-plane, pointing in superior direction.Description and possible levels for coordinate origin, such as "anterior commissure" or "between the ears".",
+  "AnatomicalLandmarkCoordinates": "Key-value pairs of the labels and 3-D digitized locations of anatomical landmarks, interpreted following the,  (for example, {"NAS": [12.7,21.3,13.9], "LPA": [5.2,11.3,9.6], "RPA": [20.2,11.3,9.1]}",
+  "AnatomicalLandmarkCoordinatesDescription":"[x, y, z] coordinates of anatomical landmarks. NAS - nasion, LPA - left preauricular point, RPA - right preauricular point",
+  
+  "DigitizedHeadPoints": "(optional) Relative path to the file containing the locations of digitized head points collected during the session. (for example, "sub-01_headshape.pos")",
+  "DigitizedHeadPointsNumber": "Number of digitized head points during co-regestration.",
+  "DigitizedHeadPointsDescription": "Free-form description of digitized points.",
+  "DigitizedHeadPointsUnits": "Unit type.Must be one of: "m", "mm", "cm", "n/a".",  
+
+  "RmsDeviation": " {"RMS":[],"NAS":[],"LPA":[],"RPA":[]}",
+  "RmsDeviationUnits": "mm",
+  "RmsDeviationDescription": "Description of how RMS deviation is calculated and for which markers."
+}

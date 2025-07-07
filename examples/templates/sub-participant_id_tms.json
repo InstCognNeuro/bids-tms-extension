@@ -1,0 +1,221 @@
+{
+  "TaskName": "HotSpot",
+  "Instructions": "",
+  "TaskDescription": "Searching for a hotspot in the motor or visual cortex of the brain",
+  "Software": "Localite TMS or NexStim",
+  "SoftwareVersion": "",
+  "Hardware": {
+    "TmsStimulator": {
+      "Manufacturer": "MagVenture or NexStim",
+      "ManufacturersModelName": "MagProX100 MAGOPTION or MagProR30 MAGOPTION or NexStim"
+    },
+    "EmgAmplifier": {
+      "Manufacturer": "Brain Products",
+      "ManufacturersModelName": "BrainAmP ExG",
+      "SamplingFrequency": 1000,
+      "EMGChannelCount": 2
+    },
+    "Coil": {
+      "coil1": {
+        "CoilType": "CB60",
+        "CoilShape": "",
+        "OuterDiameter": {
+          "Diameter": "",
+          "Units": "mm"
+        },
+        "PenetrationDepth": {
+          "Depth": "",
+          "Units": "mm",
+          "Description": "Penetration depth at 70 V/m"
+        },
+        "MagneticField": {
+          "PeakCoilSurface": {
+            "Peak": "",
+            "Units": "Tesla"
+          },
+          "Gradient": {
+            "Gradient": "",
+            "Units": "kT/s",
+            "Description": "Gradient at 20 mm"
+          }
+        }
+      },
+      "coil2": {
+        "CoilType": "CB60",
+        "CoilShape": "",
+        "OuterDiameter": {
+          "Diameter": "",
+          "Units": "mm"
+        },
+        "PenetrationDepth": {
+          "Depth": "",
+          "Units": "mm",
+          "Description": "Penetration depth at 70 V/m"
+        },
+        "MagneticField": {
+          "PeakCoilSurface": {
+            "Peak": "",
+            "Units": "Tesla"
+          },
+          "Gradient": {
+            "Gradient": "",
+            "Units": "kT/s",
+            "Description": "Gradient at 20 mm"
+          }
+        }
+      }
+    },
+	"Navigation": {
+		"Manufacturer": "Localite,NexStim, etc.",
+		"ManufacturersModelName": ""
+    }
+ },
+  
+  "CoilDriver": {
+    "Description": "Control method for the coil.("manual" , "cobot","robot", etc.).",
+    "Levels": {
+      "manual": "Coil is controlled manually",
+	  "cobot": "Coil is controlled by a cobot system",
+      "robot": "Coil is controlled by a robotic system"
+    }
+  },
+  "CoilID": {
+    "Description": "Identifier for the coil used",
+    "Levels": {
+      "coil1": "First coil, described in Hardware.",
+      "coil2": "Second coil, described in Hardware."
+    }
+  },
+  "StimulusMode": {
+    "Description": "Type of stimulus(e.g. single, twin, burst, etc). Depends on Stimulator options.",
+    "Levels": {
+      "single": "",
+      "power": "",
+      "twin": "",
+      "dual": "",
+	  "sequence": ""
+    }
+  },
+  "CurrentDirection": {
+    "Description": "Direction of induced current (e.g. normal, reverse).",
+    "Levels": {
+      "normal": "",
+      "reverse": ""
+    }
+  },
+  "Waveform": {
+    "Description": "Shape of the TMS pulse (e.g. monophasic, biphasic, etc).",
+    "Levels": {
+      "monophasic": "Monophasic pulse",
+      "biphasic": "Biphasic pulse",
+      "halfsine": "Halfsine"
+    }
+  },
+  "ProtocolName": {
+    "Description": "(when using sequence stimulation) The sequence timing mode unique name. (e.g. sici,lici,custom, etc)"
+  },
+  "InterDoublePulseInterval": {
+    "Description": "IDPI - The duration between the beginning of the first pulse to the beginning of the second pulse in twin or dual stimulation mode",
+    "Units": "msec"
+  },
+  "InterPulseInterval": {
+    "Description": "IPI - The duration between the beginning of the first pulse to the beginning of the second pulse (Interval between pulses in train in sequence mode).",
+    "Units": "msec"
+  },
+  "BurstPulsesNumber": {
+    "Description": "Number of pulses in a burst"
+  },
+  "PulseRate": {
+    "Description": "(Optional) the number of pulses per second (pps or Hz)"
+  },
+  "TrainPulses": {
+    "Description": "The number of pulses in each train."
+  },
+  "RepetitionRate": {
+    "Description": "The repetition rate refers to the number of repetitions per second (pps) at which the pulses are generated. Hz equivalent",
+    "Units": "pps"
+  },
+  "InterRepetitionInterval": {
+    "Description": "The duration between the beginning of the first burst to the beginning of the second burst. T=1/f (msec)",
+    "Units": "pps"
+  },
+  "TrainDuration": {
+    "Description": "The duration of the train stimulation"
+  },
+  "TrainNumber": {
+    "Description": "The number of trains in sequence"
+  },
+  "InterTrainInterval": {
+    "Description": "The time interval between two trains is described as the time period between the last pulse in the first train to the first pulse in the next train."
+  },
+  "InterTrainIntervalDelay": {
+	  "Description": "Additional individual time delay that can be added to the InterTrainInterval for each Train in custom protocols"
+  },
+  "TrainRampUp": {
+    "Description": "The Ramp Up function allows programming a gradual increase in amplitude with each train during burst stimulation."
+  },
+  "TrainRampUpNumber": {
+    "Description": "The number of trains applied for Ramp Up function"
+  },
+  "MarkerID": {
+    "Description": "Unique identifier of stimulation target point. Follow the _markers.tsv"
+  },
+  
+  "StimStepCount": {
+    "Description": "Count of pulses determines the stepping and number of pulses produced per mark."
+  },
+  "PulseAmplitude": {
+    "Description": "An expression for the power output level as a percentage of maximum stimulator power",
+    "Units": "%"
+  },
+  "DoublePulseAmplitude": {
+    "Description": "Actual for Dual_mode. The independent amplitude of the second pulse as a percentage of maximum stimulator power.",
+    "Units": "%"
+  },
+  "PulseAmplitudeRatio": {
+    "Description": "Actual for Twin_mode. Ratio of the amplitude of two pulses B/A."
+  },
+  "PulseAmplitudeRMT": {
+    "Description": "Stimulation intensity as a percentage of the Resting Motor Threshold (% of RMT).",
+    "Units": "%"
+  },
+  "StimValidation": {
+    "Description": "Validation of the applied stimulation. Whether stimulation was validated ("yes", "no", etc).",
+    "Levels": {
+      "yes": "Stimulation is validated",
+      "no": "Stimulation is not validated"
+    }
+  },
+  "CurrentGradient": {
+    "Description": "Actual measured value of the coil current gradient.",
+    "Units": "A/µs"
+  },
+  "ElectricFieldTarget": {
+    "Description": "Electric field at the target point",
+    "Units": "V/m"
+  },
+  "ElectricFieldMax": {
+    "Description": "Peak electric field generated by the coil",
+    "Units": "V/m"
+  },
+  "MotorResponse": {
+    "Description": "Motor response amplitude",
+    "Units": "µV"
+  },
+  "Latency": {
+    "Description": "Latency of the motor response."
+  },
+  "ResponseChannelName": {
+    "Description": "Channel name used for the response (motor-response) measurement."
+  },
+  "ResponseChannelType":{
+	  "Description":"Type of channel used for response measurement. The channel types are similar to the list of eeg modality channel type."
+  },
+  
+  "Comments": {
+    "Description": "Additional comments about the stimulation process"
+  },
+  "Timestamp": {
+    "Description": "Timestamp of the stimulation event in ISO 8601 format"
+  }
+}
