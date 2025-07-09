@@ -16,7 +16,7 @@
   "DigitizedHeadPointsDescription": "The array of digital head points were collected during co-registration procedure in Localite software",
   "DigitizedHeadPointsUnits": "n/a",  
 
-  "RmsDeviation": " {"RMS":[1.1],"NAS":[0.7],"LPA":[1.2],"RPA":[1.5]}",
+  "RmsDeviation": " {RMS:[1.1],NAS:[0.7],LPA:[1.2],RPA:[1.5]}",
   "RmsDeviationUnits": "mm",
   "RmsDeviationDescription": " RMS (Root Mean Square error)"
 }
