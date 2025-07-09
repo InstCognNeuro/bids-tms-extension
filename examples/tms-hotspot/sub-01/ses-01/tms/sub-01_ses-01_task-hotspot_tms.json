@@ -82,7 +82,6 @@
   },
   "CoilID": {
     "Description": "Coil identifier (e.g. coil_1, coil_2). Should be described in Hardware part in json sidecar. "
-    }
   },
   "StimulusMode": {
     "Description": "Type of stimulus(e.g. single, twin, burst, etc). Depends on Stimulator options.",
