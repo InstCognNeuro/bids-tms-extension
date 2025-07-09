@@ -40,41 +40,52 @@
   },
   
   "coil_x": {
-	  "Description": "X component of coil's origin location."
+	  "Description": "X component of coil's origin location.",
+	  "Units": "mm"
   },
   "coil_y": {
-	  "Description": "Y component of coil's origin location."
+	  "Description": "Y component of coil's origin location.",
+	  "Units": "mm"
   },
   "coil_z": {
-	  "Description": "Z component of coil's origin location."
+	  "Description": "Z component of coil's origin location.",
+	  "Units": "mm"
   },
   "normal_x": {
-	  "Description": "X component of coil normal vector."
+	  "Description": "X component of coil normal vector.",
+	  "Units": "mm"
   },
   "normal_y": {
-	  "Description": "Y component of coil normal vector."
+	  "Description": "Y component of coil normal vector.",
+	  "Units": "mm"
   },
   "normal_z": {
-	  "Description": "Z component of coil normal vector."
+	  "Description": "Z component of coil normal vector.",
+	  "Units": "mm"
   },
   "direction_x": {
-	  "Description": "X component of coil direction vector."
+	  "Description": "X component of coil direction vector.",
+	  "Units": "mm"
   },
   "direction_y": {
-	  "Description": "Y component of coil direction vector."
+	  "Description": "Y component of coil direction vector.",
+	  "Units": "mm"
   },
   "direction_z": {
-	  "Description": "Z component of coil direction vector."
+	  "Description": "Z component of coil direction vector.",
+	  "Units": "mm"
   },
-  
   "ElectricFieldMax_x": {
-	  "Description": "X coordinate of max electric field point."
+	  "Description": "X coordinate of max electric field point.",
+	  "Units": "mm"
   },
   "ElectricFieldMax_y": {
-	  "Description": "Y coordinate of max electric field point."
+	  "Description": "Y coordinate of max electric field point.",
+	  "Units": "mm"
   },
   "ElectricFieldMax_z": {
-	  "Description": "Z coordinate of max electric field point."
+	  "Description": "Z coordinate of max electric field point.",
+	  "Units": "mm"
   },
   "Timestamp": {
     "Description": "Timestamp of the stimulation event in ISO 8601 format"

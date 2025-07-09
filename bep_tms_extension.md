@@ -1,20 +1,32 @@
-# TMS-BIDS Extension Specification
+# BEPXXX: TMS - Transcranial Magnetic Stimulation
 
-## 1. Introduction
+**Authors**:
 
-Transcranial Magnetic Stimulation (TMS) is a non-invasive brain stimulation technique used in cognitive neuroscience, clinical research, and therapy. Despite its widespread use, TMS data lacks a standardized, FAIR-compliant structure for documentation, sharing, and multimodal integration. This specification defines a Brain Imaging Data Structure (BIDS) extension for TMS that supports structured storage of stimulation parameters, spatial coordinates, and integration with other modalities like MRI, EEG, and EMG.
+- **Oleg Shevtsov**, ORCID: [0009-0008-3460-0633](https://orcid.org/0009-0008-3460-0633)
+- **Milana Makarova**, ORCID: [0000-0002-9351-6588](https://orcid.org/0000-0002-9351-6588)
+- **Matteo Feurra**, ORCID: [0000-0003-0934-6764](https://orcid.org/0000-0003-0934-6764)
 
-## 2. BIDS Principles and Compatibility
+**Corresponding author**: Oleg Shevtsov [olegshevts@gmail.com]
 
-This extension follows core BIDS principles:
+**Submitted to**: BIDS Extension Proposals
+**Status**: Draft
+**GitHub**: 
 
-- Folder and filename consistency
-- Tabular data in `.tsv` with header rows
+## Introduction
+
+Transcranial Magnetic Stimulation (TMS) is a non-invasive method for stimulating the human brain. TMS is widely used in neuroscience research to study cortical excitability, brain-behavior relationships, and to develop novel therapeutic interventions. Despite its growing adoption, no standardized data structure has been proposed for organizing and sharing TMS data in a FAIR-compliant way. We introduce an extension to the Brain Imaging Data Structure (BIDS) to support TMS data, enabling consistent documentation, data sharing, and multimodal integration with existing BIDS modalities such as MRI, EEG, EMG, and behavioral data.
+
+## BIDS Common Principles
+
+This extension adheres to core BIDS principles:
+
+- Folder and file naming consistency
 - Sidecar `.json` files for metadata
+- `.tsv` files for tabular data with header rows
 - Inheritance principle
 - Modality-specific folders (`tms/`, `eeg/`, `beh/`, etc.)
 
-## 3. Folder and File Structure
+## Folder Structure
 
 ```
 sub-<label>/
@@ -29,22 +41,136 @@ sub-<label>/
 			└── sub-<label>[_ses-<label>]_task-<label>[_acq-<label>][_run-<label>]_events.json
 ```
 
-## 4. Use Case Stages
+## TMS-Specific File Naming Conventions
 
-### The TMS-BIDS extension supports multiple stages of TMS-based research:
+- `*_tms.tsv`: Main TMS stimulation parameters
+- `*_markers.tsv`: Stimulation site coordinates
+- `*_coordsystem.json`: Description of the coordinate space used in marker localization
 
-- **Stage 0 — Registration**: The process of digitally registering control points for alignment with coordinate systems and anatomical scans.
-- **Stage 1 — Hotspot Mapping**: EMG responses and electric field estimation.
-- **Stage 2 — RMT Calibration**: Collection of Resting Motor Threshold parameters.
-- **Stage 3 — Targeted Stimulation**: Experimental behavioral tasks or interventional protocols.
+## Use Case Stages
 
-## 5. Detailed overview of data structure
+The TMS-BIDS extension supports multiple stages of TMS-based research:
 
-### 5.1 `*_coordsystem.json` — Coordinate Metadata
+- **Stage 0 – Registration**: The process of digitally registering control points for alignment with coordinate systems and applying synchronization to structural MRI
+- **Stage 1 – Hotspot Mapping**: Extended tabular files store stimulation location, EMG response, electric field estimates, and device settings.
+- **Stage 2 – RMT and Threshold Calibration**: Collecting data for Resting Motor Threshold determination. Only core stimulation parameters are recorded.
+- **Stage 3 – Targeted Stimulation**: Used in intervention or behavioral tasks, includes coordinate files to support navigated stimulation and data integration.
 
-The _coordsystem.json file follows the established BIDS approach used in other modalities (e.g., anat, nirs, eeg). It adopts the common structure for defining coordinate systems, spatial units, anatomical landmarks, and fiducials. This ensures compatibility with existing tools and maximizes interoperability.
-A _coordsystem.json file is used to specify the fiducials, the location of anatomical landmarks, and the coordinate system and units in which the position of landmarks or TMS stimulation targets is expressed. Fiducials are objects with a well-defined location used to facilitate the localization of sensors and co-registration. Anatomical landmarks are locations on a research subject such as the nasion (for a detailed definition see the coordinate system appendix).
-The _coordsystem.json file is REQUIRED for navigated TMS stimulation datasets. If a corresponding anatomical MRI is available, the locations of anatomical landmarks in that scan should also be stored in the _T1w.json file which accompanies the TMS data.
+## Multimodal Integration
+
+TMS experiments can include:
+
+- MRI data (for anatomical localization or field modeling)
+- EEG recordings (online TMS-EEG protocols)
+- EMG recordings (motor response)
+- Behavioral measurements (e.g., task responses)
+
+## JSON Sidecars
+
+Each `.tsv` is accompanied by a sidecar `.json` file with:
+
+- Field descriptions
+- Units
+- Levels (if categorical)
+- Optional hardware specifications
+
+## Hardware Metadata
+
+Includes fields such as:
+
+- TMS stimulator manufacturer and model
+- Coil type and shape
+- EMG amplifier specs
+
+## Coordinate Systems
+
+The extension is agnostic to specific coordinate systems, but supports metadata indicating the system used (e.g., MNI, RAS, scanner-native).
+
+
+
+## Rationale
+
+TMS (Transcranial Magnetic Stimulation) is increasingly used in cognitive neuroscience, psychiatry, and clinical neuromodulation. However, BIDS currently lacks any standardized way to represent TMS stimulation protocols, spatial coordinates, or associated EMG/EEG/behavioral outcomes. Existing BIDS modalities (EEG, MEG, MRI) do not support stimulation-specific metadata such as coil orientation, pulse parameters, electric field estimates, or navigated targeting. This extension fills that gap by introducing a dedicated tms/ modality folder, new TSV/JSON file pairs for stimulation events, and structured metadata aligned with FAIR principles. It ensures reproducibility and compatibility across experimental stages (hotspot mapping, thresholding, targeted stimulation), hardware platforms (MagVenture, Nexstim), and multimodal pipelines (MRI, EEG, EMG).
+
+## Use Cases
+
+1. Hotspot Localization in Motor Cortex
+A researcher uses navigated TMS to identify the hotspot for motor evoked potentials (MEPs) in the hand area of the primary motor cortex. The markers.tsv stores the 3D coordinates of the coil and target location. The tms.tsv stores stimulation parameters and the EMG response for each pulse. The dataset can be shared with others or reused for retrospective analysis of electric field modeling.
+
+2. Resting Motor Threshold (RMT) Calibration Study
+A lab conducts an RMT calibration session using manual stimulation without navigation. Only core pulse parameters are recorded. The tms.tsv allows later analysis and statistical modeling of threshold data across participants.
+
+3. Closed-Loop TMS-EEG Experiment
+During an online TMS-EEG protocol, pulses are triggered in response to EEG features. Stimulation timing, coil parameters, and response metadata are captured in tms.tsv, and EEG data is saved in eeg/. The coordinate metadata enables field modeling in headspace aligned with the subject’s MRI.
+
+4. Preoperative Motor or Language Mapping
+In clinical contexts such as neurosurgery planning, navigated TMS is used to map eloquent cortical areas. The markers.tsv provides spatial reference to motor or language-related sites, which can be co-registered with anatomical MRI and surgical planning tools. This ensures maximal tissue preservation during tumor resection or epilepsy surgery.
+
+5. Behavioral Neuroeconomics Experiment with Online TMS
+A group conducts a decision-making task while applying online TMS to dorsolateral prefrontal cortex during critical stages of choice evaluation. The tms.tsv file logs precise stimulation timing aligned with trial-level behavioral markers saved in beh/. This enables fine-grained analysis of causal interference with valuation or control processes.
+
+6. Concurrent TMS-fNIRS Study
+In a simultaneous TMS–functional near-infrared spectroscopy (fNIRS) experiment, the researchers deliver bursts of TMS while recording cortical hemodynamic responses from prefrontal areas. The tms.tsv contains burst timing and parameters; coordsystem.json specifies scalp localization in shared space. This facilitates multimodal coregistration, allowing joint modeling of induced electric fields and vascular responses.
+
+## Interoperability
+
+This extension is designed to be interoperable with existing BIDS modalities:
+
+- EEG/MEG: The ResponseChannelType and ResponseChannelName fields in tms.tsv align with EEG channel naming and types, enabling integration with simultaneous TMS-EEG recordings.
+
+- MRI: The coordsystem.json allows alignment of TMS targets with anatomical scans. The IntendedFor key can point to T1-weighted images, enabling accurate co-registration and electric field modeling.
+
+- EMG: Stimulation outcomes such as MEP amplitudes and latencies can be linked to EMG recordings, either via BIDS eeg/ folder or as side-loaded physiological data.
+
+- Behavioral data: Synchronization with behavioral events stored in beh/ allows precise timing analysis of stimulation effects.
+
+- fNIRS: Coordinates and stimulation timing can be aligned with fNIRS channels using shared coordinate frameworks.
+
+- Events files: Stimulation timing and experimental context can also be synchronized using standard *_events.tsv files, enabling joint analysis with behavioral responses or external triggers.
+
+
+The proposed file formats (_tms.tsv, _markers.tsv, _coordsystem.json) reuse conventions already present in EEG and NIRS (*_electrodes.tsv, *_optodes.tsv, coordsystem.json) and anatomical modalities, minimizing the learning curve for tool developers and researchers.
+
+The coordsystem.json file supports extensions from other modalities. As modern studies often involve multimodal designs combining TMS with EEG or fNIRS, additional fields from those domains may also be included where appropriate. These may include:
+
+- EEGCoordinateSystem, EEGCoordinateUnits, EEGCoordinateSystemDescription
+
+- NIRSCoordinateSystem, NIRSCoordinateUnits, NIRSCoordinateProcessingDescription, NIRSCoordinateSystemDescription
+
+- FiducialsDescription, FiducialsCoordinates, FiducialsCoordinateUnits, FiducialsCoordinateSystem, FiducialsCoordinateSystemDescription
+
+- Additionally, the structure can also include *_headshape.pos files that contain 3D digitized head points. These files improve spatial alignment between stimulation targets, anatomical scans, and sensor positions.
+
+## Validation Strategy
+
+We plan to support validation of TMS-BIDS datasets through the official bids-validator by developing a dedicated plugin or extending existing schemas. The validation strategy includes:
+
+- File presence and structure: Ensure required TMS files (*_tms.tsv, *_tms.json, *_markers.tsv, *_coordsystem.json) are present and named according to BIDS conventions.
+
+- Column checks: Verify required columns exist in .tsv files, match expected names, and follow type constraints (e.g., numeric, categorical, ISO 8601 timestamps).
+
+- Reference consistency: Cross-validate that MarkerID values used in *_tms.tsv exist in the corresponding *_markers.tsv.
+
+- Units and levels: Check that units (e.g., "ms", "V/m", "%") and levels (for categorical fields like StimulusMode or CoilDriver) are properly defined in .json sidecars.
+
+- Multimodal compatibility: Ensure that IntendedFor fields in coordsystem.json correctly reference anatomical scans, and that time alignment across modalities (e.g., events, behavioral data) is maintained.
+
+- Headshape files: When present, verify naming and placement of *_headshape.pos files.
+
+In the early phase, validation will also be supported via curated example datasets and integration tests contributed by the community. Strict validation will be optional to support minimal and legacy datasets during transition.
+
+## Backward Compatibility
+
+This extension introduces new file types and metadata fields under the dedicated tms/ modality folder and does not modify or deprecate any existing BIDS entities. Therefore, it is fully backward compatible with current BIDS datasets and tools.
+
+All additions follow BIDS conventions for optional modality folders and sidecar metadata. Existing BIDS datasets remain valid without modification, and TMS datasets using this extension will not interfere with standard processing pipelines for MRI, EEG, or behavioral data.
+
+Where possible, existing BIDS fields and patterns (e.g., coordsystem.json, *_events.tsv, IntendedFor) are reused to ensure maximal tool reuse and minimal changes to validators or data analysis workflows.
+
+
+## Appendix A: Field Definitions
+
+### *_coordsystem.json Parameters:
 
 ```
 | Field                                           | Type    | Description                                                                                                                                                                                                                                                                     | Units / Levels                      |
@@ -64,61 +190,8 @@ The _coordsystem.json file is REQUIRED for navigated TMS stimulation datasets. I
 | `RmsDeviationUnits`                             | string  | Unit of RMS deviation values.                                                                                                                                                                                                                                                   | `"m"`, `"mm"`, `"cm"`, `"n/a"`      |
 | `RmsDeviationDescription`                       | string  | Description of how RMS deviation is calculated and for which markers.                                                                                                                                                                                                           | —                                   |
 ```
-Example *_coordsystem.json:
-```
-{
-  "ImageData": "NIFTI",
-  "IntendedFor": "bids::sub-01/ses-01/anat/sub-01_T1w.nii.gz",
-  "AnatomicalLandmarkCoordinateSystem": "Individual",
-  "AnatomicalLandmarkCoordinateSystemUnits": "mm",
-  "AnatomicalLandmarkCoordinateSystemDescription": "RAS orientation: origin halfway between LPA and RPA; x-axis points to RPA, y-axis orthogonal through NAS, z-axis orthogonal to xy-plane.",
-  "AnatomicalLandmarkCoordinates": {
-    "NAS": [12.7, 21.3, 13.9],
-    "LPA": [5.2, 11.3, 9.6],
-    "RPA": [20.2, 11.3, 9.1]
-  },
-  "AnatomicalLandmarkCoordinatesDescription": "[x, y, z] coordinates of anatomical landmarks: NAS (nasion), LPA (left preauricular), RPA (right preauricular)",
-  "DigitizedHeadPoints": "sub-01_acq-HEAD_headshape.pos",
-  "DigitizedHeadPointsNumber": 1200,
-  "DigitizedHeadPointsDescription": "Digitized head points collected during subject registration",
-  "DigitizedHeadPointsUnits": "mm",
-  "RmsDeviation": {
-    "NAS": [0.7],
-    "LPA": [0.3],
-    "RPA": [0.4],
-    "RMS": [0.5]
-  },
-  "RmsDeviationUnits": "mm",
-  "RmsDeviationDescription": "Root Mean Square deviation for fiducial points"
-}
-```
-* Parameters include:
 
-The list below reflects the key parameters currently required for describing coordinate systems in TMS datasets. However, as modern studies often involve multimodal designs combining TMS with EEG or fNIRS, additional fields from other modalities may also be included where appropriate. 
-These may include:
-- EEGCoordinateSystem, EEGCoordinateUnits, EEGCoordinateSystemDescription
-- NIRSCoordinateSystem, NIRSCoordinateUnits, NIRSCoordinateProcessingDescription, NIRSCoordinateSystemDescription
-- FiducialsDescription, FiducialsCoordinates, FiducialsCoordinateUnits, FiducialsCoordinateSystem, FiducialsCoordinateSystemDescription
-
-### Optional Headshape Files (*_headshape.<extension>)
-
-This file is RECOMMENDED.
-
-3D digitized head points  that describe the head shape and/or EEG electrode locations can be digitized and stored in separate files. These files are typically used to improve the accuracy of co-registration between the stimulation target, anatomical data, etc. The acq-<label> entity can be used when more than one type of digitization in done for a session, for example when the head points are in a separate file from the EEG locations.
-For example:
-```
-sub-<label>/
-   └─ ses-<label>/
-		└── tms/
-			├─ sub-<label>[_ses-<label>]__acq-HEAD_headshape.pos 
-			└─ sub-<label>[_ses-<label>]__acq-EEG_headshape.pos  
-```
-These files supplement the DigitizedHeadPoints, DigitizedHeadPointsUnits, and DigitizedHeadPointsDescription fields in the corresponding _coordsystem.json file. Their inclusion is especially useful when sharing datasets intended for advanced spatial analysis or electric field modeling.
-
-### 5.2 `*_markers.tsv` — Stimulation Site Coordinates (optional sidecar `_markers.json` )
-
-Stores stimulation target coordinates and optional coil's orientation information. Supports multiple navigation systems (e.g., Localite, Nexstim) via flexible fields. 
-Required columns:
+### *_markers.tsv Parameters:
 
 ```
 | Field                | Type   | Description                                                                                             | Units    |
@@ -147,29 +220,7 @@ Required columns:
 | `Timestamp`          | string | Timestamp of the stimulation event in ISO 8601 format.                                                  | ISO 8601 |
 ```
 
-### Example _markers.tsv:
-
-```
-MarkerID	PeelingDepth	target_x	target_y	target_z	entry_x	entry_y	entry_z	Matrix4D	coil_x	coil_y	coil_z	normal_x	normal_y	normal_z	direction_x	direction_y	direction_z	ElectricFieldMax_x	ElectricFieldMax_y	ElectricFieldMax_z	Timestamp
-M01	        15.3	        12.1	    25.4	    43.2	    11.9	    24.8	    42.8	    n/a	        11.7	    24.6	    42.5	    0.0	        0.0	        1.0	        1.0	        0.0	        0.0	            13.5	            26.2	            44.1	        2025-06-01T13:45:20.123Z
-M02	        14.7	        18.0	    27.9	    41.0	    17.8	    27.5	    40.5	    [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]	n/a	        n/a	        n/a	        n/a	        n/a	        n/a	        n/a	        n/a	        n/a	            19.3	            29.1	            42.2	        2025-06-01T13:45:25.789Z
-
-```
-
-### Field Ordering Rationale
-
-The *_markers.tsv file defines the spatial locations and orientation vectors of stimulation targets used in TMS experiments. When designing this structure, we drew partial inspiration from existing BIDS files such as *_electrodes.tsv (EEG), which capture electrode positions. However, no existing modality in BIDS explicitly supports the full specification required for navigated TMS — including stimulation coordinates, orientation vectors, and electric field estimates.
-This makes _markers.tsv a novel file type, tailored to the specific needs of TMS. Fields are ordered to reflect their functional roles:
-- Identification: MarkerID appears first, enabling structured referencing in the _tms.tsv file. May include not only a unique ID number but also a step count determines the stepping and number of pulses produced per mark.
-- Spatial Coordinates: target_*, entry_* and PeelingDepth  describe the position of the stimulation point in the selected coordinate system. coil(x,y,z) describe the position of the TMS coil in the selected coordinate system.
-- Orientation Vectors: normal_* and direction_* vectors or transformation matrix ("Matrix4D") define the coil orientation in 3D space — a critical factor in modeling TMS effects.
-- Electric Field (optional): ElectricFieldMax_* defines where the electric field is maximized.
-
-This design supports both minimal and advanced use cases: basic datasets can include just the spatial coordinates, while high-resolution multimodal studies can specify full coil orientation and field modeling parameters.
-
-### 5.3 `*_tms.tsv` — Stimulation Parameters
-
-Stores all stimulation data. Contains one row per stimulation step. Required columns:
+### *_tms.tsv Parameters:
 
 ```
 | Field                        | Type    | Description                                                                                    | Units / Levels                              |
@@ -215,7 +266,49 @@ Stores all stimulation data. Contains one row per stimulation step. Required col
 | `Timestamp`                  | string  | Timestamp in ISO 8601 format.                                                                  | ISO 8601                                    |
 
 ```
-### Example *_tms.tsv:
+
+## Appendix B: Examples
+
+### Example *_coordsystem.json:
+
+```
+{
+  "ImageData": "NIFTI",
+  "IntendedFor": "bids::sub-01/ses-01/anat/sub-01_T1w.nii.gz",
+  "AnatomicalLandmarkCoordinateSystem": "Individual",
+  "AnatomicalLandmarkCoordinateSystemUnits": "mm",
+  "AnatomicalLandmarkCoordinateSystemDescription": "RAS orientation: origin halfway between LPA and RPA; x-axis points to RPA, y-axis orthogonal through NAS, z-axis orthogonal to xy-plane.",
+  "AnatomicalLandmarkCoordinates": {
+    "NAS": [12.7, 21.3, 13.9],
+    "LPA": [5.2, 11.3, 9.6],
+    "RPA": [20.2, 11.3, 9.1]
+  },
+  "AnatomicalLandmarkCoordinatesDescription": "[x, y, z] coordinates of anatomical landmarks: NAS (nasion), LPA (left preauricular), RPA (right preauricular)",
+  "DigitizedHeadPoints": "sub-01_acq-HEAD_headshape.pos",
+  "DigitizedHeadPointsNumber": 1200,
+  "DigitizedHeadPointsDescription": "Digitized head points collected during subject registration",
+  "DigitizedHeadPointsUnits": "mm",
+  "RmsDeviation": {
+    "NAS": [0.7],
+    "LPA": [0.3],
+    "RPA": [0.4],
+    "RMS": [0.5]
+  },
+  "RmsDeviationUnits": "mm",
+  "RmsDeviationDescription": "Root Mean Square deviation for fiducial points"
+}
+```
+
+### Example *_markers.tsv:
+
+```
+MarkerID	PeelingDepth	target_x	target_y	target_z	entry_x	entry_y	entry_z	Matrix4D	coil_x	coil_y	coil_z	normal_x	normal_y	normal_z	direction_x	direction_y	direction_z	ElectricFieldMax_x	ElectricFieldMax_y	ElectricFieldMax_z	Timestamp
+M01	        15.3	        12.1	    25.4	    43.2	    11.9	    24.8	    42.8	    n/a	        11.7	    24.6	    42.5	    0.0	        0.0	        1.0	        1.0	        0.0	        0.0	            13.5	            26.2	            44.1	        2025-06-01T13:45:20.123Z
+M02	        14.7	        18.0	    27.9	    41.0	    17.8	    27.5	    40.5	    [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]	n/a	        n/a	        n/a	        n/a	        n/a	        n/a	        n/a	        n/a	        n/a	            19.3	            29.1	            42.2	        2025-06-01T13:45:25.789Z
+
+```
+
+### Examples *_tms.tsv:
 
 ```
 CoilDriver	CoilID	StimulusMode	CurrentDirection	Waveform	ProtocolName	InterDoublePulseInterval	InterPulseInterval	BurstPulsesNumber	PulseRate	TrainPulses	RepetitionRate	InterRepetitionInterval	TrainDuration	TrainNumber	InterTrainInterval	InterTrainIntervalDelay	TrainRampUp	TrainRampUpNumber	MarkerID	StimStepCount	FirstPulseIntensity	SecondPulseIntensity	PulseIntensityRatio	FirstPulseIntensityRMT	SecondPulseIntensityRMT	StimValidation	CurrentGradient	ElectricFieldTarget	ElectricFieldMax	MotorResponse	Latency	ResponseChannelName	ResponseChannelType	ResponseChannelDescription	ResponseChannelReference	Status	StatusDescription	Timestamp
@@ -315,76 +408,3 @@ fixed	coil_2	single	reverse	monophasic	custom	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/
   }
 }
 ```
-
-### 5.4 Field Ordering Rationale
-
-The order of parameters in _tms.tsv follows a hierarchical structure based on their variability during an experiment and their role in defining the stimulation process. Parameters are grouped into three logical blocks:
-
-Block 1 — Stimulation Configuration:
-This section includes core parameters that are typically set before the experiment and remain constant throughout the session:
-- CoilDriver, CoilID, StimulusMode, CurrentDirection, Waveform
-
-Block 2 — Stimulation Protocol Timing:
-These parameters describe the temporal pattern and structure of stimulation protocols. They may vary between experimental sessions or protocols:
-- ProtocolName, InterDoublePulseInterval, InterPulseInterval, BurstPulsesNumber, PulseRate, TrainPulses, RepetitionRate, InterRepetitionInterval, TrainDuration, TrainNumber, InterTrainInterval, InterTrainIntervalDelay, TrainRampUp, TrainRampUpNumber, CoilDriver, CoilID, StimulusMode, CurrentDirection, Waveform
-
-Block 3 — Target-Specific Stimulation and Outcomes:
-This section captures the most dynamic data — values that change from one stimulation point to another:
-- MarkerID, StimStepCount, FirstPulseIntens, SecondPulseIntens, PulseIntensRatio, PulseIntensRMT, StimValidation, CurrentGradient, ElectricFieldTarget, ElectricFieldMax, MotorResponse, Latency, ResponseChannelName, ResponseChannelType, Comments, Timestamp
-
-This structure reflects the actual flow of TMS experimentation — from hardware configuration, through protocol design, to per-target application and physiological feedback. Grouping fields this way improves readability and aligns with practical data collection workflows.
-
-### 5.5 Multimodal Integration
-
-- TMS experiments can include:
-- MRI data (for anatomical localization or field modeling)
-- EEG recordings (online TMS-EEG protocols)
-- EMG recordings (motor response)
-- Behavioral measurements (e.g., task responses)
-
-### 5.6 Sidecar JSON Files
-
-Each .tsv file is accompanied by a corresponding .json sidecar that provides essential metadata. These sidecars serve both as formal definitions of the tabular fields and as containers for standardized metadata describing the context of data acquisition.
-
-#### _tms.json Sidecar
-
-The _tms.json file describes the contents of the associated _tms.tsv and provides additional metadata categories commonly found across BIDS modalities. It should include:
-
-Field definitions for each column in _tms.tsv, including:
-- Description
-- Units (e.g., ms, %, A/µs)
-- Levels (for categorical fields such as StimulusMode, CurrentDirection, etc.)
-
-In addition, the following structured metadata blocks are RECOMMENDED:
-
-Hardware Information: Details about the TMS stimulator, coil model, navigation system, amplifier (if applicable).
-- StimulatorManufacturer, StimulatorModel, CoilModel, NavigationSystem, Manufacturer, ManufacturersModelName, DeviceSerialNumber, etc.
-
-Task Information: Description of the cognitive/behavioral task during which stimulation is applied.
-- TaskName, TaskDescription, Instructions, CogAtlasID, etc.
-
-Institution Information: BIDS-compliant fields such as:
-- InstitutionName, InstitutionAddress, InstitutionalDepartmentName
-
-Electrical Stimulation Metadata:
-- ElectricalStimulation: boolean value (true if stimulation was applied)
-- ElectricalStimulationParameters: structured free-form description of stimulation protocol or parameters
-
-These metadata fields enhance dataset interpretability, facilitate cross-site harmonization, and promote automated analysis pipelines.
-Other .json sidecars (e.g., for _markers.tsv or _coordsystem.json) should follow similar BIDS conventions, focusing on field-level descriptions, spatial units, and hardware references.
-
-### 5.7 Hardware Metadata
-
-- Hardware section includes fields such as:
-- TMS stimulator manufacturer and model
-- Coil type and shape
-- EMG amplifier specs
-
-### 5.8 Coordinate Systems
-
-The extension is agnostic to specific coordinate systems, but supports metadata indicating the system used (e.g., MNI, RAS, scanner-native).
-
-## 6. Summary
-
-The TMS-BIDS extension standardizes storage of TMS experiments in a multimodal, stage-aware, and FAIR-compliant way. It ensures reproducibility, hardware traceability, and compatibility with existing BIDS tools. Community feedback is welcome to refine this proposal prior to official BIDS inclusion.
-

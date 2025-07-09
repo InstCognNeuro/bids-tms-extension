@@ -16,7 +16,7 @@
       "EMGChannelCount": 2
     },
     "Coil": {
-      "coil1": {
+      "coil_1": {
         "CoilType": "CB60",
         "CoilShape": "",
         "OuterDiameter": {
@@ -40,7 +40,7 @@
           }
         }
       },
-      "coil2": {
+      "coil_2": {
         "CoilType": "CB60",
         "CoilShape": "",
         "OuterDiameter": {
@@ -72,18 +72,16 @@
  },
   
   "CoilDriver": {
-    "Description": "Control method for the coil.("manual" , "cobot","robot", etc.).",
+    "Description": "Control method for the coil.(manual, fixed, cobot, robot)",
     "Levels": {
-      "manual": "Coil is controlled manually",
-	  "cobot": "Coil is controlled by a cobot system",
-      "robot": "Coil is controlled by a robotic system"
+      "manual": "Coil is held and directed by the operator manually",
+	  "fixed": "Coil is fixed in place using a mechanical arm or holder (non-controllable)",
+	  "cobot": "Coil is positioned via a collaborative system (e.g., Localite arm)",
+      "robot": "Coil is dynamically positioned via a robotic system"
     }
   },
   "CoilID": {
-    "Description": "Identifier for the coil used",
-    "Levels": {
-      "coil1": "First coil, described in Hardware.",
-      "coil2": "Second coil, described in Hardware."
+    "Description": "Coil identifier (e.g. coil_1, coil_2). Should be described in Hardware part in json sidecar. "
     }
   },
   "StimulusMode": {
@@ -136,8 +134,8 @@
     "Units": "pps"
   },
   "InterRepetitionInterval": {
-    "Description": "The duration between the beginning of the first burst to the beginning of the second burst. T=1/f (msec)",
-    "Units": "pps"
+    "Description": "The duration between the beginning of the first burst to the beginning of the second burst. T=1/f",
+    "Units": "msec"
   },
   "TrainDuration": {
     "Description": "The duration of the train stimulation"
@@ -164,26 +162,27 @@
   "StimStepCount": {
     "Description": "Count of pulses determines the stepping and number of pulses produced per mark."
   },
-  "PulseAmplitude": {
+  "FirstPulseIntensity": {
     "Description": "An expression for the power output level as a percentage of maximum stimulator power",
     "Units": "%"
   },
-  "DoublePulseAmplitude": {
-    "Description": "Actual for Dual_mode. The independent amplitude of the second pulse as a percentage of maximum stimulator power.",
+  "SecondPulseIntensity": {
+    "Description": "Actual for Dual_mode. The independent power output level of the second pulse as a percentage of maximum stimulator power.",
     "Units": "%"
   },
-  "PulseAmplitudeRatio": {
-    "Description": "Actual for Twin_mode. Ratio of the amplitude of two pulses B/A."
+  "PulseIntensityRatio": {
+    "Description": "Actual for Twin_mode. Ratio of the power output levels of two pulses B/A."
   },
-  "PulseAmplitudeRMT": {
-    "Description": "Stimulation intensity as a percentage of the Resting Motor Threshold (% of RMT).",
+  "FirstPulseIntensityRMT": {
+    "Description": "Stimulation intensity for the first or single pulse as a percentage of the Resting Motor Threshold (% of RMT). ",
     "Units": "%"
   },
+  "SecondPulseIntensityRMT": {
+    "Description": "Stimulation intensity for the second or single pulseas a percentage of the Resting Motor Threshold (% of RMT).",
+    "Units": "%"
+  },  
   "StimValidation": {
-    "Description": "Validation of the applied stimulation. Whether stimulation was validated ("yes", "no", etc).",
-    "Levels": {
-      "yes": "Stimulation is validated",
-      "no": "Stimulation is not validated"
+    "Description": "Validation of the applied stimulation. Whether stimulation was validated "
     }
   },
   "CurrentGradient": {
@@ -211,9 +210,17 @@
   "ResponseChannelType":{
 	  "Description":"Type of channel used for response measurement. The channel types are similar to the list of eeg modality channel type."
   },
-  
-  "Comments": {
-    "Description": "Additional comments about the stimulation process"
+  "ResponseChannelDescription":{
+	  "Description":"Brief free-text description of the channel"
+  },
+  "ResponseChannelReference":{
+	  "Description":"Name of the reference electrode(s). This column is not needed when it is common to all channels. In that case the reference electrode(s) can be specified in *_eeg.json as EEGReference)."
+  },  
+  "Status": {
+    "Description": "Data quality observed on the channel. A channel is considered bad if its data quality is compromised by excessive noise."
+  },
+  "StatusDescription": {
+	  "Description": "Freeform text description of noise or artifact affecting data quality on the channel."
   },
   "Timestamp": {
     "Description": "Timestamp of the stimulation event in ISO 8601 format"
