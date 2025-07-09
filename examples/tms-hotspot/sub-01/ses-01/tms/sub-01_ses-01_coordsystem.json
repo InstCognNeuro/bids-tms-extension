@@ -5,7 +5,7 @@
   
   "AnatomicalLandmarkCoordinateSystem": "Individual",
   "AnatomicalLandmarkCoordinateSystemUnits": "mm",
-  "AnatomicalLandmarkCoordinateSystemDescription": "RAS orientation: Origin halfway between LPA and RPA, positive x-axis towards RPA, positive y-axis orthogonal to x-axis through Nasion, z-axis orthogonal to xy-plane, pointing in superior direction. Coordinate origin "between the ears".",
+  "AnatomicalLandmarkCoordinateSystemDescription": "RAS orientation: Origin halfway between LPA and RPA, positive x-axis towards RPA, positive y-axis orthogonal to x-axis through Nasion, z-axis orthogonal to xy-plane, pointing in superior direction. Coordinate origin (between the ears).",
   "AnatomicalLandmarkCoordinates": {
 	  "NAS":[9.76823213,-0.11917776,-1.87417223],
 	  "LPA":[-0.29274026,6.88415084,0.70120923],
