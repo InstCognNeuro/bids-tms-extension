@@ -183,7 +183,6 @@
   },  
   "StimValidation": {
     "Description": "Validation of the applied stimulation. Whether stimulation was validated "
-    }
   },
   "CurrentGradient": {
     "Description": "Actual measured value of the coil current gradient.",
