@@ -1,0 +1,73 @@
+tms_data_tsv:
+  suffixes:
+    - tms
+  extensions:
+    - .tsv
+  datatypes:
+    - tms
+  entities:
+    subject: required
+    session: optional
+    task: optional
+    tracksys: optional
+    acquisition: optional
+    run: optional
+
+tms_data_json:
+  suffixes:
+    - tms
+  extensions:
+    - .json
+  datatypes:
+    - tms
+  entities:
+    subject: required
+    session: optional
+    task: optional
+    tracksys: optional
+    acquisition: optional
+    run: optional
+
+tms_markers_tsv:
+  suffixes:
+    - markers
+  extensions:
+    - .tsv
+  datatypes:
+    - tms
+  entities:
+    subject: required
+    session: optional
+    task: optional
+    tracksys: optional
+    acquisition: optional
+    run: optional
+
+tms_markers_json:
+  suffixes:
+    - markers
+  extensions:
+    - .json
+  datatypes:
+    - tms
+  entities:
+    subject: required
+    session: optional
+    task: optional
+    tracksys: optional
+    acquisition: optional
+    run: optional
+
+tms_coordsystem:
+  suffixes:
+    - coordsystem
+  extensions:
+    - .json
+  datatypes:
+    - tms
+  entities:
+    subject: required
+    session: optional
+    task: optional
+    acquisition: optional
+    run: optional

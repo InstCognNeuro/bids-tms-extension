@@ -86,8 +86,6 @@ Includes fields such as:
 
 The extension is agnostic to specific coordinate systems, but supports metadata indicating the system used (e.g., MNI, RAS, scanner-native).
 
-
-
 ## Rationale
 
 TMS (Transcranial Magnetic Stimulation) is increasingly used in cognitive neuroscience, psychiatry, and clinical neuromodulation. However, BIDS currently lacks any standardized way to represent TMS stimulation protocols, spatial coordinates, or associated EMG/EEG/behavioral outcomes. Existing BIDS modalities (EEG, MEG, MRI) do not support stimulation-specific metadata such as coil orientation, pulse parameters, electric field estimates, or navigated targeting. This extension fills that gap by introducing a dedicated tms/ modality folder, new TSV/JSON file pairs for stimulation events, and structured metadata aligned with FAIR principles. It ensures reproducibility and compatibility across experimental stages (hotspot mapping, thresholding, targeted stimulation), hardware platforms (MagVenture, Nexstim), and multimodal pipelines (MRI, EEG, EMG).
@@ -167,7 +165,6 @@ All additions follow BIDS conventions for optional modality folders and sidecar 
 
 Where possible, existing BIDS fields and patterns (e.g., coordsystem.json, *_events.tsv, IntendedFor) are reused to ensure maximal tool reuse and minimal changes to validators or data analysis workflows.
 
-
 ## Appendix A: Field Definitions
 
 ### *_coordsystem.json Parameters:
@@ -190,6 +187,28 @@ Where possible, existing BIDS fields and patterns (e.g., coordsystem.json, *_eve
 | `RmsDeviationUnits`                             | string  | Unit of RMS deviation values.                                                                                                                                                                                                                                                   | `"m"`, `"mm"`, `"cm"`, `"n/a"`      |
 | `RmsDeviationDescription`                       | string  | Description of how RMS deviation is calculated and for which markers.                                                                                                                                                                                                           | —                                   |
 ```
+** Parameters include **:
+
+The list below reflects the key parameters currently required for describing coordinate systems in TMS datasets. However, as modern studies often involve multimodal designs combining TMS with EEG or fNIRS, additional fields from other modalities may also be included where appropriate. 
+These may include:
+- EEGCoordinateSystem, EEGCoordinateUnits, EEGCoordinateSystemDescription
+- NIRSCoordinateSystem, NIRSCoordinateUnits, NIRSCoordinateProcessingDescription, NIRSCoordinateSystemDescription
+- FiducialsDescription, FiducialsCoordinates, FiducialsCoordinateUnits, FiducialsCoordinateSystem, FiducialsCoordinateSystemDescription
+
+### Optional Headshape Files (*_headshape.<extension>)
+
+This file is RECOMMENDED.
+
+3D digitized head points  that describe the head shape and/or EEG electrode locations can be digitized and stored in separate files. These files are typically used to improve the accuracy of co-registration between the stimulation target, anatomical data, etc. The acq-<label> entity can be used when more than one type of digitization in done for a session, for example when the head points are in a separate file from the EEG locations.
+For example:
+```
+sub-<label>/
+   └─ ses-<label>/
+		└── tms/
+			├─ sub-<label>[_ses-<label>]__acq-HEAD_headshape.pos 
+			└─ sub-<label>[_ses-<label>]__acq-EEG_headshape.pos  
+```
+These files supplement the DigitizedHeadPoints, DigitizedHeadPointsUnits, and DigitizedHeadPointsDescription fields in the corresponding _coordsystem.json file. Their inclusion is especially useful when sharing datasets intended for advanced spatial analysis or electric field modeling.
 
 ### *_markers.tsv Parameters:
 
@@ -219,6 +238,81 @@ Where possible, existing BIDS fields and patterns (e.g., coordsystem.json, *_eve
 | `ElectricFieldMax_z` | number | Z coordinate of max electric field point.                                                               | `mm`     |
 | `Timestamp`          | string | Timestamp of the stimulation event in ISO 8601 format.                                                  | ISO 8601 |
 ```
+### *_tms.json Sidecar JSON 
+
+The _tms.json file is a required sidecar accompanying the _tms.tsv file. It serves to describe the columns in the tabular file, define units and levels for categorical variables, and—crucially—provide structured metadata about the stimulation device, task, and context of the experiment.
+
+Like other BIDS modalities, this JSON file includes:
+
+**Task information:**
+
+- TaskName, TaskDescription, Instructions
+
+**Device metadata:**
+
+- Manufacturer, ManufacturersModelName, SoftwareVersion, DeviceSerialNumber, TrackingSystemName
+
+**Institutional context:**
+
+- InstitutionName, InstitutionAddress, InstitutionalDepartmentName
+
+**Stimulation metadata:**
+
+- ElectricalStimulation: whether TMS was applied (true/false)
+
+- ElectricalStimulationParameters: optional free-text summary of protocol
+
+Additionally, the _tms.json file introduces a dedicated hardware block called CoilSet, which captures detailed physical and electromagnetic parameters of one or more stimulation coils used in the session. This structure allows precise modeling, reproducibility, and harmonization of coil-related effects across studies.
+
+Each entry in "CoilSet" is an object with the following fields:
+
+```
+Field									Type	Description
+CoilID									string	Unique identifier for the coil, used to reference this entry from _tms.tsv.
+CoilType								string	Model/type of the coil (e.g., CB60, Cool-B65).
+CoilShape								string	Geometric shape of the coil windings (e.g., figure-of-eight, circular).
+CoilCooling								string	Cooling method (air, liquid, passive).
+CoilDiameter.Value						number	Diameter of the outer winding (usually in mm).
+CoilDiameter.Units						string	Units for the diameter (e.g., mm).
+MagneticFieldPeak.Value					number	Peak magnetic field at the surface of the coil (in Tesla).
+MagneticFieldPeak.Units					string	Units for magnetic field peak (Tesla).
+MagneticFieldPenetrationDepth.Value		number	Penetration depth of the magnetic field at a reference intensity level (e.g., 70 V/m).
+MagneticFieldGradient.Value				number	Gradient of the magnetic field at a specific depth (typically in kT/s).
+```
+
+Example:
+```
+"CoilSet": [
+  {
+    "CoilID": "1",
+    "CoilType": "CB60",
+    "CoilShape": "figure-of-eight",
+    "CoilCooling": "air",
+    "CoilDiameter": {
+      "Value": 75,
+      "Units": "mm",
+      "Description": "Outer winding diameter"
+    },
+    "MagneticFieldPeak": {
+      "Value": 1.9,
+      "Units": "Tesla",
+      "Description": "Peak magnetic field"
+    },
+    "MagneticFieldPenetrationDepth": {
+      "Value": 18,
+      "Units": "mm",
+      "Description": "Depth at which field reaches 70 V/m"
+    },
+    "MagneticFieldGradient": {
+      "Value": 160,
+      "Units": "kT/s",
+      "Description": "Gradient 20 mm below coil center"
+    }
+  }
+]
+```
+
+The _tms.json follows standard BIDS JSON conventions and is essential for validator support, automated parsing, and multimodal integration (e.g., aligning stimulation parameters with EEG or MRI metadata).
 
 ### *_tms.tsv Parameters:
 
@@ -246,11 +340,11 @@ Where possible, existing BIDS fields and patterns (e.g., coordsystem.json, *_eve
 | `TrainRampUpNumber`          | integer | Number of trains for ramp-up.                                                                  | —                                           |
 | `MarkerID`                   | string  | Identifier of stimulation target.                                                              | —                                           |
 | `StimStepCount`              | integer | Number of pulses applied at the marker.                                                        | —                                           |
-| `FirstPulseIntensity`        | number  | Intensity of the first or single pulse (% of max stimulator output).                           | %                                           |
-| `SecondPulseIntensity`       | number  | Intensity of the second pulse (dual mode).                                                     | %                                           |
-| `PulseIntensityRatio`        | number  | Amplitude ratio of two pulses (B/A).                                                           | —                                           |
-| `FirstPulseIntensityRMT`     | number  | Intensity of first/single pulse as % of RMT.                                                   | %                                           |
-| `SecondPulseIntensityRMT`    | number  | Intensity of second pulse as % of RMT.                                                         | %                                           |
+| `FirstPulseAmplitude`        | number  | Intensity of the first or single pulse (% of max stimulator output).                           | %                                           |
+| `SecondPulseAmplitude`       | number  | Intensity of the second pulse (dual mode).                                                     | %                                           |
+| `PulseAmplitudeRatio`        | number  | Amplitude ratio of two pulses (B/A).                                                           | —                                           |
+| `FirstPulseAmplitudeRMT`     | number  | Intensity of first/single pulse as % of RMT.                                                   | %                                           |
+| `SecondPulseAmplitudeRMT`    | number  | Intensity of second pulse as % of RMT.                                                         | %                                           |
 | `StimValidation`             | string  | Was the stimulation verified / observed.                                                       | yes / no / free-text                        |
 | `CurrentGradient`            | number  | Measured gradient of coil current.                                                             | A/µs                                        |
 | `ElectricFieldTarget`        | number  | Electric field at stimulation target.                                                          | V/m                                         |
@@ -311,7 +405,7 @@ M02	        14.7	        18.0	    27.9	    41.0	    17.8	    27.5	    40.5	    [
 ### Examples *_tms.tsv:
 
 ```
-CoilDriver	CoilID	StimulusMode	CurrentDirection	Waveform	ProtocolName	InterDoublePulseInterval	InterPulseInterval	BurstPulsesNumber	PulseRate	TrainPulses	RepetitionRate	InterRepetitionInterval	TrainDuration	TrainNumber	InterTrainInterval	InterTrainIntervalDelay	TrainRampUp	TrainRampUpNumber	MarkerID	StimStepCount	FirstPulseIntensity	SecondPulseIntensity	PulseIntensityRatio	FirstPulseIntensityRMT	SecondPulseIntensityRMT	StimValidation	CurrentGradient	ElectricFieldTarget	ElectricFieldMax	MotorResponse	Latency	ResponseChannelName	ResponseChannelType	ResponseChannelDescription	ResponseChannelReference	Status	StatusDescription	Timestamp
+CoilDriver	CoilID	StimulusMode	CurrentDirection	Waveform	ProtocolName	InterDoublePulseInterval	InterPulseInterval	BurstPulsesNumber	PulseRate	TrainPulses	RepetitionRate	InterRepetitionInterval	TrainDuration	TrainNumber	InterTrainInterval	InterTrainIntervalDelay	TrainRampUp	TrainRampUpNumber	MarkerID	StimStepCount	FirstPulseAmplitude	SecondPulseAmplitude	PulseAmplitudeRatio	FirstPulseAmplitudeRMT	SecondPulseAmplitudeRMT	StimValidation	CurrentGradient	ElectricFieldTarget	ElectricFieldMax	MotorResponse	Latency	ResponseChannelName	ResponseChannelType	ResponseChannelDescription	ResponseChannelReference	Status	StatusDescription	Timestamp
 manual	coil_1	twin	normal	biphasic	sici	2.5	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	marker1	1	70	110	1.57	80	110	validated	45.2	92.3	118.5	420	24.0	APB	emg	Flexor carpi	linked-ears	good	n/a	2025-06-01T13:45:10.456Z
 fixed	coil_2	single	reverse	monophasic	custom	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	marker2	1	75	n/a	n/a	85	n/a	validated	40.7	85.1	112.2	n/a	n/a	n/a	n/a	n/a	n/a	bad	high muscle tension 2025-06-01T13:46:12.789Z
 ```
@@ -323,50 +417,60 @@ fixed	coil_2	single	reverse	monophasic	custom	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/
   "TaskName": "HotSpot",
   "Instructions": "Focus on the fixation cross. Try to stay relaxed.",
   "TaskDescription": "Identifying optimal stimulation site for right-hand motor cortex (APB).",
-  "Software": "Localite TMS Navigator",
   "SoftwareVersion": "3.2.1",
-  "Hardware": {
-    "TmsStimulator": {
-      "Manufacturer": "MagVenture",
-      "ManufacturersModelName": "MagPro X100"
+  "CoilSet": [
+  {
+    "CoilID": "1",
+    "CoilType": "CB60",
+    "CoilShape": "figure-of-eight",
+	"CoilCooling": "air",
+    "CoilDiameter": {
+      "Value": 75,
+      "Units": "mm",
+	  "Description": "Diameter of the outer winding of the coil."
     },
-    "EmgAmplifier": {
-      "Manufacturer": "Brain Products",
-      "ManufacturersModelName": "BrainAmp ExG",
-      "SamplingFrequency": 1000,
-      "EMGChannelCount": 2
+    "MagneticFieldPeak": {
+        "Value": 1.9,
+        "Units": "Tesla",
+		"Description": "Peak magnetic field at the surface of the coil."
     },
-    "Coil": {
-      "coil_1": {
-        "CoilType": "CB60",
-        "CoilShape": "Figure-8",
-        "OuterDiameter": {
-          "Diameter": "75",
-          "Units": "mm"
-        },
-        "PenetrationDepth": {
-          "Depth": "23",
-          "Units": "mm",
-          "Description": "Penetration depth at 70 V/m"
-        },
-        "MagneticField": {
-          "PeakCoilSurface": {
-            "Peak": "1.5",
-            "Units": "Tesla"
-          },
-          "Gradient": {
-            "Gradient": "120",
-            "Units": "kT/s",
-            "Description": "Gradient at 20 mm"
-          }
-        }
-      }
+	"MagneticFieldPenetrationDepth": {
+		"Value": 18,
+		"Units": "mm",
+		"Description": "Depth at which the electric field reaches 70 V/m under the center of the coil."
     },
-    "Navigation": {
-      "Manufacturer": "Localite",
-      "ManufacturersModelName": "TMS Navigator"
+    "MagneticFieldGradient": {
+        "Value": 160,
+        "Units": "kT/s",
+        "Description": "Magnetic field gradient at 20 mm below the coil center."
     }
-  },
+    },
+	{
+	"CoilID": "2",
+    "CoilType": "CB60",
+    "CoilShape": "figure-of-eight",
+	"CoilCooling": "liquid",
+    "CoilDiameter": {
+      "Value": 75,
+      "Units": "mm",
+	  "Description": "Diameter of the outer winding of the coil."
+    },
+    "MagneticFieldPeak": {
+        "Value": 1.9,
+        "Units": "Tesla",
+		"Description": "Peak magnetic field at the surface of the coil."
+    },
+	"MagneticFieldPenetrationDepth": {
+		"Value": 18,
+		"Units": "mm",
+		"Description": "Depth at which the electric field reaches 70 V/m under the center of the coil."
+    },
+    "MagneticFieldGradient": {
+        "Value": 160,
+        "Units": "kT/s",
+        "Description": "Magnetic field gradient at 20 mm below the coil center."
+    }	
+	}],  
   "CoilDriver": {
     "Description": "Control method for the coil.",
     "Levels": {
@@ -394,11 +498,11 @@ fixed	coil_2	single	reverse	monophasic	custom	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/a	n/
       "reverse": "Posterior-anterior"
     }
   },
-  "FirstPulseIntensity": {
+  "FirstPulseAmplitude": {
     "Description": "Power output level of first or single pulse.",
     "Units": "%"
   },
-  "FirstPulseIntensityRMT": {
+  "FirstPulseAmplitudeRMT": {
     "Description": "Power output level of first or single pulse in % of RMT.",
     "Units": "%"
   },

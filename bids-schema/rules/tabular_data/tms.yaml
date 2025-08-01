@@ -1,0 +1,86 @@
+---
+TMSEvents:
+  selectors:
+    - datatype == "tms"
+    - suffix == "tms"
+    - extension == ".tsv"
+  initial_columns:
+    - CoilDriver
+    - CoilID
+    - StimulusMode
+    - CurrentDirection
+    - Waveform
+  columns:
+    CoilDriver: required
+    CoilID: required
+    StimulusMode: required
+    CurrentDirection: required
+    Waveform: recommended
+    ProtocolName: optional
+    InterDoublePulseInterval: recommended
+    InterPulseInterval: recommended
+    BurstPulsesNumber: recommended
+    PulseRate: recommended
+    TrainPulses: recommended
+    RepetitionRate: recommended
+    InterRepetitionInterval: recommended
+    TrainDuration: recommended
+    TrainNumber: recommended
+    InterTrainInterval: recommended
+    InterTrainIntervalDelay: recommended
+    TrainRampUp: recommended
+    TrainRampUpNumber: recommended
+    MarkerID: required
+    StimStepCount: recommended
+    FirstPulseAmplitude: recommended
+    SecondPulseAmplitude: recommended
+    PulseAmplitudeRatio: recommended
+    FirstPulseAmplitudeRMT: recommended
+    SecondPulseAmplitudeRMT: recommended
+    StimValidation: optional
+    CurrentGradient: optional
+    ElectricFieldTarget: optional
+    ElectricFieldMax: optional
+    MotorResponse: recommended
+    Latency: recommended
+    ResponseChannelName: recommended
+    ResponseChannelType: recommended
+    ResponseChannelDescription: recommended
+    ResponseChannelReference: recommended
+    Status: optional
+    StatusDescription: optional
+    Timestamp: recommended
+  additional_columns: allowed_if_defined
+
+TMSMarkers:
+  selectors:
+    - datatype == "tms"
+    - suffix == "markers"
+    - extension == ".tsv"
+  initial_columns:
+    - MarkerID
+  columns:
+    MarkerID: required
+    PeelingDepth: recommended
+    target_x: recommended
+    target_y: recommended
+    target_z: recommended
+    entry_x: recommended
+    entry_y: recommended
+    entry_z: recommended
+    Matrix_4x4: optional
+    coil_x: optional
+    coil_y: optional
+    coil_z: optional
+    normal_x: optional
+    normal_y: optional
+    normal_z: optional
+    direction_x: optional
+    direction_y: optional
+    direction_z: optional
+    ElectricFieldMax_x: optional
+    ElectricFieldMax_y: optional
+    ElectricFieldMax_z: optional
+    Timestamp: recommended
+  index_columns: [MarkerID]
+  additional_columns: allowed_if_defined

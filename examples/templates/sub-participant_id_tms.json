@@ -2,75 +2,65 @@
   "TaskName": "HotSpot",
   "Instructions": "",
   "TaskDescription": "Searching for a hotspot in the motor or visual cortex of the brain",
-  "Software": "Localite TMS or NexStim",
   "SoftwareVersion": "",
-  "Hardware": {
-    "TmsStimulator": {
-      "Manufacturer": "MagVenture or NexStim",
-      "ManufacturersModelName": "MagProX100 MAGOPTION or MagProR30 MAGOPTION or NexStim"
-    },
-    "EmgAmplifier": {
-      "Manufacturer": "Brain Products",
-      "ManufacturersModelName": "BrainAmP ExG",
-      "SamplingFrequency": 1000,
-      "EMGChannelCount": 2
-    },
-    "Coil": {
-      "coil1": {
-        "CoilType": "CB60",
-        "CoilShape": "",
-        "OuterDiameter": {
-          "Diameter": "",
-          "Units": "mm"
-        },
-        "PenetrationDepth": {
-          "Depth": "",
-          "Units": "mm",
-          "Description": "Penetration depth at 70 V/m"
-        },
-        "MagneticField": {
-          "PeakCoilSurface": {
-            "Peak": "",
-            "Units": "Tesla"
-          },
-          "Gradient": {
-            "Gradient": "",
-            "Units": "kT/s",
-            "Description": "Gradient at 20 mm"
-          }
-        }
-      },
-      "coil2": {
-        "CoilType": "CB60",
-        "CoilShape": "",
-        "OuterDiameter": {
-          "Diameter": "",
-          "Units": "mm"
-        },
-        "PenetrationDepth": {
-          "Depth": "",
-          "Units": "mm",
-          "Description": "Penetration depth at 70 V/m"
-        },
-        "MagneticField": {
-          "PeakCoilSurface": {
-            "Peak": "",
-            "Units": "Tesla"
-          },
-          "Gradient": {
-            "Gradient": "",
-            "Units": "kT/s",
-            "Description": "Gradient at 20 mm"
-          }
-        }
-      }
-    },
-	"Navigation": {
-		"Manufacturer": "Localite,NexStim, etc.",
-		"ManufacturersModelName": ""
-    }
- },
+  "Manufacturer": "MagVenture or NexStim",
+  "ManufacturersModelName": "MagProX100 MAGOPTION or MagProR30 MAGOPTION or NexStim",
+  "TrackingSystemName": "Localite,NexStim, etc.",
   
+  "CoilSet": [
+  {
+    "CoilID": "1",
+    "CoilType": "CB60",
+    "CoilShape": "figure-of-eight",
+	"CoilCooling": "air",
+    "CoilDiameter": {
+      "Value": 75,
+      "Units": "mm",
+	  "Description": "Diameter of the outer winding of the coil."
+    },
+    "MagneticFieldPeak": {
+        "Value": 1.9,
+        "Units": "Tesla",
+		"Description": "Peak magnetic field at the surface of the coil."
+    },
+	"MagneticFieldPenetrationDepth": {
+		"Value": 18,
+		"Units": "mm",
+		"Description": "Depth at which the electric field reaches 70 V/m under the center of the coil."
+    },
+    "MagneticFieldGradient": {
+        "Value": 160,
+        "Units": "kT/s",
+        "Description": "Magnetic field gradient at 20 mm below the coil center."
+    }
+    },
+	{
+	"CoilID": "2",
+    "CoilType": "CB60",
+    "CoilShape": "figure-of-eight",
+	"CoilCooling": "liquid",
+    "CoilDiameter": {
+      "Value": 75,
+      "Units": "mm",
+	  "Description": "Diameter of the outer winding of the coil."
+    },
+    "MagneticFieldPeak": {
+        "Value": 1.9,
+        "Units": "Tesla",
+		"Description": "Peak magnetic field at the surface of the coil."
+    },
+	"MagneticFieldPenetrationDepth": {
+		"Value": 18,
+		"Units": "mm",
+		"Description": "Depth at which the electric field reaches 70 V/m under the center of the coil."
+    },
+    "MagneticFieldGradient": {
+        "Value": 160,
+        "Units": "kT/s",
+        "Description": "Magnetic field gradient at 20 mm below the coil center."
+    }	
+	}],
+
   "CoilDriver": {
     "Description": "Control method for the coil.(manual, fixed, cobot, robot)",
     "Levels": {
@@ -161,22 +151,22 @@
   "StimStepCount": {
     "Description": "Count of pulses determines the stepping and number of pulses produced per mark."
   },
-  "FirstPulseIntensity": {
+  "FirstPulseAmplitude": {
     "Description": "An expression for the power output level as a percentage of maximum stimulator power",
     "Units": "%"
   },
-  "SecondPulseIntensity": {
+  "SecondPulseAmplitude": {
     "Description": "Actual for Dual_mode. The independent power output level of the second pulse as a percentage of maximum stimulator power.",
     "Units": "%"
   },
-  "PulseIntensityRatio": {
+  "PulseAmplitudeRatio": {
     "Description": "Actual for Twin_mode. Ratio of the power output levels of two pulses B/A."
   },
-  "FirstPulseIntensityRMT": {
+  "FirstPulseAmplitudeRMT": {
     "Description": "Stimulation intensity for the first or single pulse as a percentage of the Resting Motor Threshold (% of RMT). ",
     "Units": "%"
   },
-  "SecondPulseIntensityRMT": {
+  "SecondPulseAmplitudeRMT": {
     "Description": "Stimulation intensity for the second or single pulseas a percentage of the Resting Motor Threshold (% of RMT).",
     "Units": "%"
   },  

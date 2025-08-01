@@ -1,0 +1,5 @@
+{
+  "name": "bids-tms-extension",
+  "version": "1.10.2-dev",
+  "description": "Custom schema for TMS BIDS extension"
+}

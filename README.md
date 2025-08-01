@@ -3,8 +3,6 @@
 ## Status
 
 This proposal is under development and has not yet been submitted as an official BIDS Extension Proposal (BEP). Feedback from the community is welcome and encouraged.
-TMS-BIDS Extension Proposal: [https://docs.google.com/document/d/1ExXM4WsFUyuDHcMUJpUPME38zVRskwRG/edit?usp=sharing&ouid=110389466890611734752&rtpof=true&sd=true]
-
 
 ## Overview
 

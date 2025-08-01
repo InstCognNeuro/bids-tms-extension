@@ -35,7 +35,7 @@
     "Units": "mm"
   },
   
-  "Matrix4D": {
+  "Matrix_4x4": {
 	  "Description": "4x4 affine transformation matrix for the coil positioning (instrument markers of Localite systems)"
   },
   

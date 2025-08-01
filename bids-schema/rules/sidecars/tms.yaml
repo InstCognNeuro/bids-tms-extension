@@ -1,0 +1,150 @@
+#
+## TMS common metadata fields
+
+---
+# _coordystem.json
+
+TMSCoordsystemSidecar:
+  selectors:
+    - datatype == "tms"
+    - suffix == "coordsystem"
+  fields:
+    ImageData: required
+    IntendedFor: optional
+    AnatomicalLandmarkCoordinateSystem: required
+    AnatomicalLandmarkCoordinateSystemUnits: recommended
+    AnatomicalLandmarkCoordinateSystemDescription: recommended
+    AnatomicalLandmarkCoordinates: recommended
+    AnatomicalLandmarkCoordinatesDescription: recommended
+    DigitizedHeadPoints: optional
+    DigitizedHeadPointsNumber: optional
+    DigitizedHeadPointsDescription: optional
+    DigitizedHeadPointsUnits: optional
+    RmsDeviation: optional
+    RmsDeviationUnits: optional
+    RmsDeviationDescription: optional
+
+# _markers.json 
+
+TMSMarkersSidecar:
+  selectors:
+    - datatype == "tms"
+    - suffix == "markers"
+  fields:
+    MarkerID: required
+    PeelingDepth: recommended
+    target_x: recommended
+    target_y: recommended
+    target_z: recommended
+    entry_x: recommended
+    entry_y: recommended
+    entry_z: recommended
+    Matrix_4x4: optional
+    coil_x: optional
+    coil_y: optional
+    coil_z: optional
+    normal_x: optional
+    normal_y: optional
+    normal_z: optional
+    direction_x: optional
+    direction_y: optional
+    direction_z: optional
+    ElectricFieldMax_x: optional
+    ElectricFieldMax_y: optional
+    ElectricFieldMax_z: optional
+    Timestamp: recommended
+
+# _tms.json
+TMSHardware:
+  selectors:
+    - datatype == "tms"
+    - suffix == "tms"
+  fields:
+    Manufacturer: recommended
+    ManufacturersModelName: recommended
+    SoftwareVersions: recommended
+    DeviceSerialNumber: recommended
+    CoilSet: required
+    TrackingSystemName: required
+
+TMSTaskInformation:
+  selectors:
+    - datatype == "tms"
+    - suffix == "tms"
+  fields:
+    TaskName: required
+    TaskDescription: recommended
+    Instructions: recommended
+    CogAtlasID: optional
+    CogPOID: optional
+
+TMSInstitutionInformation:
+  selectors:
+    - datatype == "tms"
+    - suffix == "tms"
+  fields:
+    InstitutionName: recommended
+    InstitutionAddress: optional
+    InstitutionalDepartmentName: optional
+
+# Specific TMS fields MUST be present
+TMSRequired:
+  selectors:
+    - datatype == "tms"
+    - suffix == "tms"
+  fields:
+    CoilDriver: required
+    CoilID: required 
+    StimulusMode: required
+    CurrentDirection: required
+    Waveform: required
+    MarkerID: required
+      
+# Specific TMS fields SHOULD be present
+TMSRecommended:
+  selectors:
+    - datatype == "tms"
+    - suffix == "tms"
+  fields:
+    InterDoublePulseInterval: recommended
+    InterPulseInterval: recommended
+    BurstPulsesNumber: recommended
+    PulseRate: recommended
+    TrainPulses: recommended
+    RepetitionRate: recommended
+    InterRepetitionInterval: recommended
+    TrainDuration: recommended
+    TrainNumber: recommended
+    InterTrainInterval: recommended
+    InterTrainIntervalDelay: recommended
+    TrainRampUp: recommended
+    TrainRampUpNumber: recommended
+    StimStepCount: recommended
+    FirstPulseAmplitude: recommended
+    SecondPulseAmplitude: recommended
+    PulseAmplitudeRatio: recommended
+    FirstPulseAmplitudeRMT: recommended
+    SecondPulseAmplitudeRMT: recommended
+    MotorResponse: recommended
+    Latency: recommended
+    ResponseChannelName: recommended
+    ResponseChannelType: recommended
+    ResponseChannelDescription: recommended
+    ResponseChannelReference: recommended
+    Timestamp: recommended
+
+# Specific TMS fields MAY be present
+TMSOptional:
+  selectors:
+    - datatype == "tms"
+    - suffix == "tms"
+  fields:
+    ProtocolName: optional
+    StimValidation: optional
+    CurrentGradient: optional
+    ElectricFieldTarget: optional
+    ElectricFieldMax: optional
+    Status: optional
+    StatusDescription: optional
+
+
