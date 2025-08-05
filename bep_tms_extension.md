@@ -223,7 +223,7 @@ These files supplement the DigitizedHeadPoints, DigitizedHeadPointsUnits, and Di
 | `entry_x`            | number | X-coordinate of the entry point in millimeters.                                                         | `mm`     |
 | `entry_y`            | number | Y-coordinate of the entry point in millimeters.                                                         | `mm`     |
 | `entry_z`            | number | Z-coordinate of the entry point in millimeters.                                                         | `mm`     |
-| `Matrix4D`           | array  | 4x4 affine transformation matrix for the coil positioning (instrument markers of Localite systems).     | —        |
+| `Matrix_4x4`         | array  | 4x4 affine transformation matrix for the coil positioning (instrument markers of Localite systems).     | —        |
 | `coil_x`             | number | X component of coil's origin location.                                                                  | `mm`     |
 | `coil_y`             | number | Y component of coil's origin location.                                                                  | `mm`     |
 | `coil_z`             | number | Z component of coil's origin location.                                                                  | `mm`     |
@@ -396,7 +396,7 @@ The _tms.json follows standard BIDS JSON conventions and is essential for valida
 ### Example *_markers.tsv:
 
 ```
-MarkerID	PeelingDepth	target_x	target_y	target_z	entry_x	entry_y	entry_z	Matrix4D	coil_x	coil_y	coil_z	normal_x	normal_y	normal_z	direction_x	direction_y	direction_z	ElectricFieldMax_x	ElectricFieldMax_y	ElectricFieldMax_z	Timestamp
+MarkerID	PeelingDepth	target_x	target_y	target_z	entry_x	entry_y	entry_z	Matrix_4x4	coil_x	coil_y	coil_z	normal_x	normal_y	normal_z	direction_x	direction_y	direction_z	ElectricFieldMax_x	ElectricFieldMax_y	ElectricFieldMax_z	Timestamp
 M01	        15.3	        12.1	    25.4	    43.2	    11.9	    24.8	    42.8	    n/a	        11.7	    24.6	    42.5	    0.0	        0.0	        1.0	        1.0	        0.0	        0.0	            13.5	            26.2	            44.1	        2025-06-01T13:45:20.123Z
 M02	        14.7	        18.0	    27.9	    41.0	    17.8	    27.5	    40.5	    [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]	n/a	        n/a	        n/a	        n/a	        n/a	        n/a	        n/a	        n/a	        n/a	            19.3	            29.1	            42.2	        2025-06-01T13:45:25.789Z
 
