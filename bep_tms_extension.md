@@ -10,11 +10,11 @@
 
 **Submitted to**: BIDS Extension Proposals
 **Status**: Draft
-**GitHub**: 
+**GitHub**: https://github.com/InstCognNeuro/bids-tms-extension
 
 ## Introduction
 
-Transcranial Magnetic Stimulation (TMS) is a non-invasive method for stimulating the human brain. TMS is widely used in neuroscience research to study cortical excitability, brain-behavior relationships, and to develop novel therapeutic interventions. Despite its growing adoption, no standardized data structure has been proposed for organizing and sharing TMS data in a FAIR-compliant way. We introduce an extension to the Brain Imaging Data Structure (BIDS) to support TMS data, enabling consistent documentation, data sharing, and multimodal integration with existing BIDS modalities such as MRI, EEG, EMG, and behavioral data.
+Transcranial Magnetic Stimulation (TMS) is a non-invasive method for stimulating the human brain. TMS is widely used in neuroscience research to study cortical excitability, brain-behavior relationships, and to develop novel therapeutic interventions. Despite its growing adoption, no standardized data structure currently exists for organizing and sharing TMS data in a FAIR-compliant way. We introduce an extension to the Brain Imaging Data Structure (BIDS) to support TMS data, enabling consistent documentation, data sharing, and multimodal integration with existing BIDS modalities such as MRI, EEG, EMG, and behavioral data.
 
 ## BIDS Common Principles
 
@@ -49,16 +49,16 @@ sub-<label>/
 
 ## Use Case Stages
 
-The TMS-BIDS extension supports multiple stages of TMS-based research:
+The TMS-BIDS extension supports multiple stages of TMS-based research workflows::
 
-- **Stage 0 – Registration**: The process of digitally registering control points for alignment with coordinate systems and applying synchronization to structural MRI
+- **Stage 0 – Registration**: Digitally registering control points for alignment with coordinate systems, and synchronizing them with structural MRI.
 - **Stage 1 – Hotspot Mapping**: Extended tabular files store stimulation location, EMG response, electric field estimates, and device settings.
 - **Stage 2 – RMT and Threshold Calibration**: Collecting data for Resting Motor Threshold determination. Only core stimulation parameters are recorded.
 - **Stage 3 – Targeted Stimulation**: Used in intervention or behavioral tasks, includes coordinate files to support navigated stimulation and data integration.
 
 ## Multimodal Integration
 
-TMS experiments can include:
+TMS experiments may include:
 
 - MRI data (for anatomical localization or field modeling)
 - EEG recordings (online TMS-EEG protocols)
@@ -88,7 +88,7 @@ The extension is agnostic to specific coordinate systems, but supports metadata 
 
 ## Rationale
 
-TMS (Transcranial Magnetic Stimulation) is increasingly used in cognitive neuroscience, psychiatry, and clinical neuromodulation. However, BIDS currently lacks any standardized way to represent TMS stimulation protocols, spatial coordinates, or associated EMG/EEG/behavioral outcomes. Existing BIDS modalities (EEG, MEG, MRI) do not support stimulation-specific metadata such as coil orientation, pulse parameters, electric field estimates, or navigated targeting. This extension fills that gap by introducing a dedicated tms/ modality folder, new TSV/JSON file pairs for stimulation events, and structured metadata aligned with FAIR principles. It ensures reproducibility and compatibility across experimental stages (hotspot mapping, thresholding, targeted stimulation), hardware platforms (MagVenture, Nexstim), and multimodal pipelines (MRI, EEG, EMG).
+Transcranial Magnetic Stimulation (TMS) is increasingly used in cognitive neuroscience, psychiatry, and clinical neuromodulation. However, BIDS currently lacks any standardized way to represent TMS stimulation protocols, spatial coordinates, or associated EMG/EEG/behavioral outcomes. Existing BIDS modalities (EEG, MEG, MRI) do not support stimulation-specific metadata such as coil orientation, pulse parameters, electric field estimates, or navigated targeting. This extension fills that gap by introducing a dedicated tms/ modality folder, new TSV/JSON file pairs for stimulation events, and structured metadata aligned with FAIR principles. It ensures reproducibility and compatibility across experimental stages (hotspot mapping, thresholding, targeted stimulation), hardware platforms (MagVenture, Nexstim), and multimodal pipelines (MRI, EEG, EMG).
 
 ## Use Cases
 
