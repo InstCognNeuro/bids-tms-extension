@@ -267,17 +267,16 @@ Additionally, the _tms.json file introduces a dedicated hardware block called Co
 Each entry in "CoilSet" is an object with the following fields:
 
 ```
-Field									Type	Description
-CoilID									string	Unique identifier for the coil, used to reference this entry from _tms.tsv.
-CoilType								string	Model/type of the coil (e.g., CB60, Cool-B65).
-CoilShape								string	Geometric shape of the coil windings (e.g., figure-of-eight, circular).
-CoilCooling								string	Cooling method (air, liquid, passive).
-CoilDiameter.Value						number	Diameter of the outer winding (usually in mm).
-CoilDiameter.Units						string	Units for the diameter (e.g., mm).
-MagneticFieldPeak.Value					number	Peak magnetic field at the surface of the coil (in Tesla).
-MagneticFieldPeak.Units					string	Units for magnetic field peak (Tesla).
-MagneticFieldPenetrationDepth.Value		number	Penetration depth of the magnetic field at a reference intensity level (e.g., 70 V/m).
-MagneticFieldGradient.Value				number	Gradient of the magnetic field at a specific depth (typically in kT/s).
+|Field									|Type	 |Description
+|---------------------------------------|--------|---------------------------------------------------------------------------------- 
+|CoilID									|string	 |Unique identifier for the coil, used to reference this entry from _tms.tsv.
+|CoilType								|string	 |Model/type of the coil (e.g., CB60, Cool-B65).
+|CoilShape								|string	 |Geometric shape of the coil windings (e.g., figure-of-eight, circular).
+|CoilCooling							|string	 |Cooling method (air, liquid, passive).
+|CoilDiameter							|number	 |Diameter of the outer winding (usually in mm).
+|MagneticFieldPeak						|number	 |Peak magnetic field at the surface of the coil (in Tesla).
+|MagneticFieldPenetrationDepth			|number	 |Penetration depth of the magnetic field at a reference intensity level (e.g., 70 V/m).
+|MagneticFieldGradient					|number	 |Gradient of the magnetic field at a specific depth (typically in kT/s).
 ```
 
 Example:
